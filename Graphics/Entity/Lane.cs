@@ -8,8 +8,8 @@ namespace GOSonic3D.Entity
 {
     public enum Lane
     {
-        Left = -20,
+        Left = -25,
         Middle = 0,
-        Right = 20
+        Right = 25
     }
 }

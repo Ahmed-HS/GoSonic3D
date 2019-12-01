@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Assimp;
 using GlmNet;
+using GOSonic3D.Entity.Objects;
 
 namespace GOSonic3D
 {
-    class Model3D
+    class Model3D : MoveableObject
     {
         Scene assimpNetScene;
         List<Mesh> netMeshes;
@@ -34,7 +35,13 @@ namespace GOSonic3D
             assimpNetScene = assimpNetimporter.ImportFile(path+ "\\" + fileName);
             Initialize(texUnit);
         }
-
+        public void Move()
+        {
+            transmatrix = glm.translate(new mat4(1), Position);
+        }
+        public virtual void UpdateMovement()
+        {
+        }
         void Initialize(int texUnit)
         {
             //animations

@@ -1,4 +1,5 @@
 ﻿using GlmNet;
+using GOSonic3D.Entity.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,7 +58,7 @@ namespace GOSonic3D._3D_Models
 
     }
 
-    public class md2
+    public class md2 : MoveableObject
     {
         public mat4 TranslationMatrix;
         public mat4 rotationMatrix;
@@ -91,6 +92,14 @@ namespace GOSonic3D._3D_Models
         float oldframe;
         float currframe;
         float[] vs, ns;
+
+        public void UpdateAnimationAndMove()
+        {
+            TranslationMatrix = glm.translate(new mat4(1), Position);
+            UpdateAnimation();
+        }
+        public virtual void UpdateMovement()
+        {}
         public md2(string fileName)
         {
             animlist = new List<anim_t>();

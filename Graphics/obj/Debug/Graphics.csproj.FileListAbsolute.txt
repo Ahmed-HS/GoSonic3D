@@ -261,3 +261,17 @@ C:\Users\Ahmed Hatem\Desktop\GoSonic3D v1.0 27.11.2019\Soinc\Graphics\obj\Debug\
 C:\Users\Ahmed Hatem\Desktop\GoSonic3D v1.0 27.11.2019\Soinc\Graphics\obj\Debug\Graphics.csproj.CopyComplete
 C:\Users\Ahmed Hatem\Desktop\GoSonic3D v1.0 27.11.2019\Soinc\Graphics\obj\Debug\GOSonic3D.exe
 C:\Users\Ahmed Hatem\Desktop\GoSonic3D v1.0 27.11.2019\Soinc\Graphics\obj\Debug\GOSonic3D.pdb
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\bin\Debug\GOSonic3D.exe.config
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\bin\Debug\GOSonic3D.exe
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\bin\Debug\GOSonic3D.pdb
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\bin\Debug\GlmNet.dll
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\bin\Debug\GlmNet.pdb
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\bin\Debug\GlmNet.xml
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\Graphics.csprojAssemblyReference.cache
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\GOSonic3D.GOSonic3DForm.resources
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\GOSonic3D.Properties.Resources.resources
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.GenerateResource.cache
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.CoreCompileInputs.cache
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.CopyComplete
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\GOSonic3D.exe
+C:\Users\Ahmed Hatem\Documents\GoSonic3D\Graphics\obj\Debug\GOSonic3D.pdb

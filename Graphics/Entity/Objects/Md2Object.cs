@@ -12,97 +12,18 @@ namespace GOSonic3D.Entity.Objects
     {
         public Entity.Lane currentLane = Lane.Middle;
 
-        public vec3 Position;
-        public vec3 Target;
-        public vec3 CurrentSpeed;
-        public vec3 IntialSpeed;
-        public vec3 Acceleration;
         public bool IsJumping;
-
-
-        public void MoveToX(float TargetX)
-        {
-            this.Target.x = TargetX;
-            ChangeSpeedX(IntialSpeed.x);
-
-            if (Target.x > Position.x)
-            {
-                if (CurrentSpeed.x < 0)
-                {
-                    CurrentSpeed.x *= -1;
-                }
-            }
-            else
-            {
-                if (CurrentSpeed.x > 0)
-                {
-                    CurrentSpeed.x *= -1;
-                }
-            }
-
-            if (Acceleration.x > 0 && CurrentSpeed.x < 0 || Acceleration.x < 0 && CurrentSpeed.x > 0)
-            {
-                Acceleration.x *= -1;
-            }
-        }
-
-        public void MoveToY(float TargetY)
-        {
-            this.Target.y = TargetY;
-            if (Target.y > Position.y)
-            {
-                if (CurrentSpeed.y < 0)
-                {
-                    CurrentSpeed.y *= -1;
-                }
-            }
-            else
-            {
-                if (CurrentSpeed.y > 0)
-                {
-                    CurrentSpeed.y *= -1;
-                }
-            }
-        }
-
-        public void MoveToZ(float TargetZ)
-        {
-            this.Target.z = TargetZ;
-            if (Target.z > Position.z)
-            {
-                if (CurrentSpeed.z < 0)
-                {
-                    CurrentSpeed.z *= -1;
-                }
-            }
-            else
-            {
-                if (CurrentSpeed.z > 0)
-                {
-                    CurrentSpeed.z *= -1;
-                }
-            }
-        }
-
-        public void MoveTo(vec3 Target)
-        {
-            MoveToX(Target.x);
-            MoveToY(Target.y);
-            MoveToZ(Target.z);
-        }
-
-        public void TranslateTo(vec3 Displacement)
-        {
-            MoveTo(new vec3(Position.x + Displacement.x, Position.y + Displacement.y, Position.z + Displacement.z));
-        }
+  
         public void Jump()
         {
             if (!IsJumping)
             {
                 IsJumping = true;
                 StartAnimation((animType)2);
-                ChangeSpeedY(3f);
-                MoveToY(30);
+                MoveToY(36,3f);
+                Console.WriteLine("Jump Presed");
+                Console.WriteLine("Velocity :" + CurrentVelocity.y);
+                Console.WriteLine("acc :" + Acceleration.y);
             }
         }
 
@@ -134,72 +55,50 @@ namespace GOSonic3D.Entity.Objects
             }
         }
 
-        public void ChangeSpeed(vec3 newSpeed)
+        public override void UpdateMovement()
         {
-            CurrentSpeed = newSpeed;
-        }
-        public void ChangeSpeedX(float newX)
-        {
-            CurrentSpeed.x = newX;
-        }
-        public void ChangeSpeedY(float newY)
-        {
-            CurrentSpeed.y = newY;
-        }
-        public void ChangeSpeedZ(float newZ)
-        {
-            CurrentSpeed.z = newZ;
-        }
-        public void UpdateMovement()
-        {
-            if ((Target.x > Position.x && CurrentSpeed.x > 0) || (Target.x < Position.x && CurrentSpeed.x < 0))
-            {
-                Position.x += CurrentSpeed.x;
-                CurrentSpeed.x += Acceleration.x;
-
-            }
-   
-            if ((Target.y > Position.y && CurrentSpeed.y > 0) || (Target.y < Position.y && CurrentSpeed.y < 0))
-            {
-                Position.y += CurrentSpeed.y;
-            }
-
-            if ((Target.z > Position.z && CurrentSpeed.z > 0) || (Target.z < Position.z && CurrentSpeed.z < 0))
-            {
-                Position.z += CurrentSpeed.z;
-            }
+            
 
             if (IsJumping)
             {
-
-                if (CurrentSpeed.y > 0)
+                if (Acceleration.y > 0)
                 {
-                    CurrentSpeed.y += Acceleration.y;
+                    CurrentVelocity.y += -(Acceleration.y * 2);
+                    Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
+                    Console.WriteLine("Current Position : " + Position.y);
                 }
                 else
                 {
-                    CurrentSpeed.y += -Acceleration.y;
-                    ChangeSpeedY(1.8f);
-                    MoveToY(0);
+                    CurrentVelocity.y += -Acceleration.y - 0.05f;
                 }
 
-                if(Position.y <= 0)
+
+                if((Acceleration.y > 0 && (ReachedTarget() || CurrentVelocity.y <= 0)))
+                {
+                    MoveToY(0,0.5f);
+                    Console.WriteLine("Top");
+                    Console.WriteLine("Velocity :" + CurrentVelocity.y);
+                    Console.WriteLine("acc :" + Acceleration.y);
+                }
+
+                if (Target.y == 0 && Position.y <= 0)
                 {
                     IsJumping = false;
                     StartAnimation((animType)0);
-                    CurrentSpeed.y = 0;
+                    CurrentVelocity.y = 0;
+                    Console.WriteLine("Ground");
                 }
+                //Console.WriteLine("Jumping :" + CurrentVelocity.y + "   " + Acceleration.y);
             }
-
-            TranslationMatrix = glm.translate(new mat4(1), Position);
-            UpdateAnimation();
-
+            UpdatePositon();
+            UpdateAnimationAndMove();
         }
         public Md2Object(string filename) : base(filename)
         {
-            ChangeSpeed(new vec3(0.25f, 0.25f, 0.25f));
-            Acceleration = new vec3(0.12f, -0.15f, 0.12f);
-            IntialSpeed = CurrentSpeed;
+            ChangeVelocity(new vec3(0.25f, 0.25f, 0.25f));
+            ChangeAcceleration(new vec3(0.12f, 0.11f, 0.12f));
+            ChangeMaxVelocity(new vec3(3, 3, 3));
+            IntialVelocity = CurrentVelocity;
             StartAnimation((animType)0);
             List<mat4> Rotations = new List<mat4>();
             Rotations.Add(glm.rotate((float)((-90.0f / 180) * Math.PI), new vec3(1, 0, 0)));
