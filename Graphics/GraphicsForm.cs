@@ -71,13 +71,43 @@ namespace GOSonic3D
             {
                 renderer.Sonic.Jump();
             }
-            if (e.KeyChar == 'l')
+            if (e.KeyChar == 'l' && renderer.PlayingGame)
             {
                 renderer.Sonic.ShiftRight();       
             }
-            if (e.KeyChar == 'k')
+            if (e.KeyChar == 'k' && renderer.PlayingGame)
             {
                 renderer.Sonic.ShiftLeft();
+            }
+            if (e.KeyChar == 'p')
+            {
+                renderer.MainMenu.MoveDown();
+            }
+            if (e.KeyChar == 'o')
+            {
+                renderer.MainMenu.MoveUp();
+            }
+            if (e.KeyChar == '\r')
+            {
+                if (renderer.MainMenu.Selected == 0)
+                {
+                    renderer.MainMenu.HideMenu();
+                    renderer.Sonic.Show();
+                    renderer.PlayingGame = true;
+                }
+                else if (renderer.MainMenu.Selected == 1)
+                {
+                    this.Close();
+                }
+            }
+
+            if (e.KeyChar == '\b')
+            {
+                if (renderer.PlayingGame)
+                {
+                    renderer.Sonic.Hide();
+                    renderer.MainMenu.ShowMenu();
+                }
             }
 
         }

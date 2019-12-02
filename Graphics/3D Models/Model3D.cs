@@ -21,12 +21,22 @@ namespace GOSonic3D
         public mat4 scalematrix;
         public mat4 transmatrix;
         public mat4 rotmatrix;
+        public float []BoundingBox;
+        public vec3 Dimensions;
         string RootPath;
         public Model3D()
         {
             scalematrix = new mat4(1);
             transmatrix = new mat4(1);
             rotmatrix = new mat4(1);
+            BoundingBox = new float[6];
+            BoundingBox[0] = float.MinValue; // Max x value
+            BoundingBox[1] = float.MaxValue; // Min x value
+            BoundingBox[2] = float.MinValue; // Max y value
+            BoundingBox[3] = float.MaxValue; // Min y value
+            BoundingBox[4] = float.MinValue; // Max z value
+            BoundingBox[5] = float.MaxValue; // Min z value
+            Dimensions = new vec3();
         }
         public void LoadFile(string path,string fileName, int texUnit)
         {
@@ -77,6 +87,7 @@ namespace GOSonic3D
         }
         void ConvertToMeshes(Node node)
         {
+
             if (node.HasMeshes)
             {
                 for (int i = 0; i < node.MeshIndices.Count; i++)
@@ -85,6 +96,15 @@ namespace GOSonic3D
                     var mesh = netMeshes[node.MeshIndices[i]];
                     for (int j = 0; j < mesh.Vertices.Count; j++)
                     {
+                        BoundingBox[0] = Math.Max(mesh.Vertices[j].X, BoundingBox[0]);
+                        BoundingBox[1] = Math.Min(mesh.Vertices[j].X, BoundingBox[1]);
+
+                        BoundingBox[2] = Math.Max(mesh.Vertices[j].Y, BoundingBox[2]);
+                        BoundingBox[3] = Math.Min(mesh.Vertices[j].Y, BoundingBox[3]);
+
+                        BoundingBox[4] = Math.Max(mesh.Vertices[j].Z, BoundingBox[4]);
+                        BoundingBox[5] = Math.Min(mesh.Vertices[j].Z, BoundingBox[5]);
+
                         m.vertices.Add(new vec3(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z));
                         if(mesh.TextureCoordinateChannels[0].Count > 0)
                             m.uvCoordinates.Add(new vec2(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y));
@@ -111,6 +131,13 @@ namespace GOSonic3D
                     ConvertToMeshes(node.Children[i]);
                 }
             }
+
+            Dimensions.x = BoundingBox[0] - BoundingBox[1];
+            Dimensions.y = BoundingBox[2] - BoundingBox[3];
+            Dimensions.z = BoundingBox[4] - BoundingBox[5];
+            Console.WriteLine("X : " + Dimensions.x);
+            Console.WriteLine("Y : " + Dimensions.y);
+            Console.WriteLine("Z : " + Dimensions.z);
         }
         public void Draw(int matID)
         {

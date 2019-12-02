@@ -20,11 +20,19 @@ namespace GOSonic3D.Entity.Objects
         public MoveableObject(vec3 StartPosition)
         {
             Position = StartPosition;
+            ChangeVelocity(new vec3(0.25f, 0.25f, 0.25f));
+            ChangeAcceleration(new vec3(0.12f, 0.11f, 0.12f));
+            ChangeMaxVelocity(new vec3(3, 3, 3));
+            IntialVelocity = CurrentVelocity;
         }
 
         public MoveableObject()
         {
             Position = new vec3(0, 0, 0);
+            ChangeVelocity(new vec3(0.25f, 0.25f, 0.25f));
+            ChangeAcceleration(new vec3(0.12f, 0.11f, 0.12f));
+            ChangeMaxVelocity(new vec3(3, 3, 3));
+            IntialVelocity = CurrentVelocity;
         }
 
         public void MoveToX(float TargetX,float SpeedX=0)

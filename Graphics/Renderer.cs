@@ -9,6 +9,7 @@ using GlmNet;
 using System.IO;
 using GOSonic3D._3D_Models;
 using GOSonic3D.Entity.Objects;
+using GOSonic3D.Entity;
 
 namespace GOSonic3D
 {
@@ -37,6 +38,8 @@ namespace GOSonic3D
         public float Speed = 1;
         public Camera cam;
         public Md2Object Sonic;
+        public Menu MainMenu;
+        public bool PlayingGame;
 
         public void Initialize()
         {
@@ -46,6 +49,8 @@ namespace GOSonic3D
 
 
             Sonic = new Md2Object(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
+            MainMenu = new Menu();
+            PlayingGame = false;
 
             //3.1
             NumOfSkyBoxFaces = 6;
@@ -227,6 +232,8 @@ namespace GOSonic3D
             }
 
             Sonic.Draw(modelID);
+            MainMenu.Draw(modelID);
+
         }
         public void Update(float deltaTime)
         {
@@ -234,6 +241,7 @@ namespace GOSonic3D
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
             Sonic.UpdateMovement();
+            MainMenu.UpdateMenu();
         }
         public void CleanUp()
         {

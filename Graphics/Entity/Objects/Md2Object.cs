@@ -13,7 +13,7 @@ namespace GOSonic3D.Entity.Objects
         public Entity.Lane currentLane = Lane.Middle;
 
         public bool IsJumping;
-  
+        public float Scale;
         public void Jump()
         {
             if (!IsJumping)
@@ -93,18 +93,26 @@ namespace GOSonic3D.Entity.Objects
             UpdatePositon();
             UpdateAnimationAndMove();
         }
+
+        public void Show()
+        {
+            scaleMatrix = glm.scale(new mat4(1), new vec3(Scale, Scale, Scale));
+        }
+
+        public void Hide()
+        {
+            scaleMatrix = glm.scale(new mat4(1), new vec3(0, 0, 0));
+        }
+
         public Md2Object(string filename) : base(filename)
         {
-            ChangeVelocity(new vec3(0.25f, 0.25f, 0.25f));
-            ChangeAcceleration(new vec3(0.12f, 0.11f, 0.12f));
-            ChangeMaxVelocity(new vec3(3, 3, 3));
-            IntialVelocity = CurrentVelocity;
             StartAnimation((animType)0);
             List<mat4> Rotations = new List<mat4>();
             Rotations.Add(glm.rotate((float)((-90.0f / 180) * Math.PI), new vec3(1, 0, 0)));
             Rotations.Add(glm.rotate((float)((90.0f / 180) * Math.PI), new vec3(0, 1, 0)));
             rotationMatrix = MathHelper.MultiplyMatrices(Rotations);
-            scaleMatrix = glm.scale(new mat4(1), new vec3(3.0f, 3.0f, 3.0f));
+            Scale = 3;
+            scaleMatrix = glm.scale(new mat4(1), new vec3(0, 0, 0));
             Position = new vec3(0, 0, -30);
             Target = Position;
             IsJumping = false;

@@ -83,8 +83,10 @@
   <ItemGroup>
     <Compile Include="3D Models\md2.cs" />
     <Compile Include="3D Models\md2LOL.cs" />
+    <Compile Include="Entity\Menu.cs" />
     <Compile Include="Entity\Objects\Md2Object.cs" />
     <Compile Include="Entity\Objects\MoveableObject.cs" />
+    <Compile Include="Entity\Text3D.cs" />
     <Compile Include="Kernel\Camera.cs" />
     <Compile Include="Entity\Lane.cs" />
     <Compile Include="Kernel\GPU.cs" />
