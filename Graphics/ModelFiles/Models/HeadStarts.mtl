@@ -1,0 +1,14 @@
+# Blender MTL File: 'greenhill.blend'
+# Material Count: 1
+
+newmtl ghz_km_totemB
+Ns 43.137255
+Ka 0.200000 0.200000 0.200000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+Ke 0.800000 0.800000 0.800000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd .\textures\ghz_km1_totemb_dif.png
+map_Ka .\\textures\\ghz_km1_totemb_dif.png

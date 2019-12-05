@@ -1,0 +1,62 @@
+# Blender MTL File: 'greenhill.blend'
+# Material Count: 5
+
+newmtl ghz_ground_sk_earth01
+Ns 43.137255
+Ka 0.200000 0.200000 0.200000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+Ke 0.800000 0.800000 0.800000
+Ni 1.500000
+d 1.000000
+illum 2
+#map_Kd .\textures\ghz_ground_sk1_earth01_dif.png
+#map_Ka .\\textures\\ghz_ground_sk1_earth01_dif.png
+
+newmtl ghz_ground_sk_earth02
+Ns 43.137255
+Ka 0.200000 0.200000 0.200000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+Ke 0.800000 0.800000 0.800000
+Ni 1.500000
+d 1.000000
+illum 2
+#map_Kd .\textures\ghz_ground_sk1_earth02_dif.png
+#map_Ka .\\textures\\ghz_ground_sk1_earth02_dif.png
+
+newmtl ghz_ground_sk_grass01_alpha
+Ns 43.137255
+Ka 0.200000 0.200000 0.200000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+#map_Kd .\textures\ghz_ground_sk1_grass01_dif.png
+#map_Ka .\\textures\\ghz_ground_sk1_grass01_dif.png
+
+newmtl ghz_km1_medium
+Ns 43.137255
+Ka 0.200000 0.200000 0.200000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+#map_Kd .\textures\ghz_plant_km1_medium_dif.png
+#map_Ka .\\textures\\ghz_plant_km1_medium_dif.png
+
+newmtl ghz_rock_sk_wall01
+Ns 43.137255
+Ka 0.200000 0.200000 0.200000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+Ke 0.800000 0.800000 0.800000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd .\textures\ghz_rock_sk1_wall01_dif.png
+map_Ka .\\textures\\ghz_rock_sk1_wall01_dif.png

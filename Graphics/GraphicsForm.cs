@@ -126,5 +126,9 @@ namespace GOSonic3D
             Cursor.Position = new Point(simpleOpenGlControl1.Size.Width/2+p.X, simpleOpenGlControl1.Size.Height/2+p.Y);
             Cursor.Clip = new Rectangle(this.Location, this.Size);
         }
+
+        private void SimpleOpenGlControl1_Load(object sender, EventArgs e)
+        {
+        }
     }
 }
