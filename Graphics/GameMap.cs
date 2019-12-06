@@ -25,7 +25,7 @@ namespace GOSonic3D
         mat4 scaleMatrix;
 
 
-        public GameMap()
+        public GameMap(vec3 MapPosition)
         {
             assestsCount = 10;
             MapComponents = new Model3D[assestsCount];
@@ -40,7 +40,7 @@ namespace GOSonic3D
              8: palms
              9: GroundSides
              */
-            Position = new vec3(45, 588, 0) * Constants.AspectRatio;
+            Position = MapPosition * Constants.AspectRatio;
             translateMatrix = glm.translate(new mat4(1), Position);
             rotationMatrix = glm.rotate((-90f / 180f) * (float)Math.PI, new vec3(0, 1, 0));
             scaleMatrix = glm.scale(new mat4(1), new vec3(200, 200, 200) * Constants.AspectRatio);
@@ -59,8 +59,13 @@ namespace GOSonic3D
         {
             UpdatePositon();
             MoveToZ(Position.z + 20);
+            if (Position.z >= 1150)
+            {
+                Position.z = -900;
+            }
             translateMatrix = glm.translate(new mat4(1), Position);
             ApplyTransformation();
+            Console.WriteLine("Z: " + Position.z);
         }
         void Intialize()
         {

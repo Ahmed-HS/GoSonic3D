@@ -36,8 +36,6 @@ namespace GOSonic3D
             MainLoopThread = new Thread(MainLoop);
             MainLoopThread.Start();
 
-
-
         }
         void initialize()
         {

@@ -43,7 +43,7 @@ namespace GOSonic3D
         public Camera cam;
         public Character Sonic;
         public Menu MainMenu;
-        GameMap Map;
+        GameMap []Map;
         
         public bool PlayingGame;
         public void Initialize()
@@ -56,7 +56,9 @@ namespace GOSonic3D
             Sonic = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
 
             MainMenu = new Menu();
-            Map = new GameMap();
+            Map = new GameMap[2];
+            Map[0] = new GameMap(new vec3(45, 588, 0));
+            Map[1] = new GameMap(new vec3(45, 588, -1000));
 
             PlayingGame = false;
 
@@ -240,7 +242,8 @@ namespace GOSonic3D
 
             Sonic.Draw(modelID);
             MainMenu.Draw(modelID);
-            Map.Draw(modelID);
+            Map[0].Draw(modelID);
+            Map[1].Draw(modelID);
 
         }
         public void Update(float deltaTime)
@@ -249,7 +252,8 @@ namespace GOSonic3D
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
             Sonic.UpdateMovement();
-            Map.Move();
+            Map[0].Move();
+            Map[1].Move();
             MainMenu.UpdateMenu();
         }
         public void CleanUp()
