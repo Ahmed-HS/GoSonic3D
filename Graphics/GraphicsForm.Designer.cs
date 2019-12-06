@@ -37,14 +37,16 @@
             this.simpleOpenGlControl1.AutoCheckErrors = false;
             this.simpleOpenGlControl1.AutoFinish = false;
             this.simpleOpenGlControl1.AutoMakeCurrent = true;
+            this.simpleOpenGlControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.simpleOpenGlControl1.AutoSwapBuffers = true;
             this.simpleOpenGlControl1.BackColor = System.Drawing.Color.Black;
             this.simpleOpenGlControl1.ColorBits = ((byte)(32));
             this.simpleOpenGlControl1.DepthBits = ((byte)(16));
+            this.simpleOpenGlControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.simpleOpenGlControl1.Location = new System.Drawing.Point(0, 0);
             this.simpleOpenGlControl1.Margin = new System.Windows.Forms.Padding(2);
             this.simpleOpenGlControl1.Name = "simpleOpenGlControl1";
-            this.simpleOpenGlControl1.Size = new System.Drawing.Size(2560, 1440);
+            this.simpleOpenGlControl1.Size = new System.Drawing.Size(1350, 729);
             this.simpleOpenGlControl1.StencilBits = ((byte)(0));
             this.simpleOpenGlControl1.TabIndex = 0;
             this.simpleOpenGlControl1.Load += new System.EventHandler(this.SimpleOpenGlControl1_Load);
@@ -55,11 +57,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 749);
+            this.ClientSize = new System.Drawing.Size(1350, 729);
             this.Controls.Add(this.simpleOpenGlControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GOSonic3DForm";
             this.Text = "GOSonic3D";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GOSonic3DForm_FormClosing);
             this.Load += new System.EventHandler(this.GOSonic3DForm_Load);
             this.ResumeLayout(false);
