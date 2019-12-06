@@ -48,7 +48,7 @@ namespace GOSonic3D.Entity
             AnimationTransitions[1] = 3.5f;
             CurrentTransition = 0;
             Moving = false;
-            Characters[0].MoveToX(Characters[0].Position.x + AnimationTransitions[CurrentTransition]);
+            //Characters[0].MoveToX(Characters[0].Position.x + AnimationTransitions[CurrentTransition]);
 
         }
         public void Draw(int ModelID)
@@ -62,7 +62,7 @@ namespace GOSonic3D.Entity
         {
             if (!Moving)
             {
-                for (int i = 1; i < Characters.Count; i++)
+                for (int i = 0; i < Characters.Count; i++)
                 {
                     //Characters[i].TranslateBy(new vec3(AnimationTransitions[CurrentTransition], 0, 0));
                     Characters[i].MoveToX(Characters[i].Position.x + AnimationTransitions[CurrentTransition]);
@@ -72,7 +72,7 @@ namespace GOSonic3D.Entity
             }
             else if (Characters[0].ReachedTarget())
             {
-                Characters[0].MoveToX(Characters[0].Position.x + AnimationTransitions[CurrentTransition]*2);
+                //Characters[0].MoveToX(Characters[0].Position.x + AnimationTransitions[CurrentTransition]*2);
                 Moving = false;
             }
             else

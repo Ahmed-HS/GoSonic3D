@@ -37,7 +37,7 @@ namespace GOSonic3D.Entity.Objects
 
         public void MoveToX(float TargetX,float SpeedX=0)
         {
-            this.Target.x = TargetX * Constants.AspectRatio;
+            this.Target.x = TargetX;
             FinishedMovement.x = 0;
             if (SpeedX == 0)
             {
@@ -106,7 +106,7 @@ namespace GOSonic3D.Entity.Objects
 
         public void MoveToZ(float TargetZ, float SpeedZ=0)
         {
-            this.Target.z = TargetZ * Constants.AspectRatio;
+            this.Target.z = TargetZ;
             FinishedMovement.z = 0;
             if (SpeedZ == 0)
             {

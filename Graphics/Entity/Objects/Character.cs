@@ -12,9 +12,9 @@ namespace GOSonic3D.Entity.Objects
     {
         public enum Lane
         {
-            Left = -20,
+            Left = -28,
             Middle = 0,
-            Right = 20
+            Right = 28
         }
 
         public Lane CurrentLane = Lane.Middle;
@@ -39,12 +39,12 @@ namespace GOSonic3D.Entity.Objects
         {
             if (CurrentLane == Lane.Left)
             {
-                MoveToX((int)Lane.Middle);
+                MoveToX((int)Lane.Middle *Constants.AspectRatio);
                 CurrentLane = Lane.Middle;
             }
             else if (CurrentLane == Lane.Middle)
             {
-                MoveToX((int)Lane.Right);
+                MoveToX((int)Lane.Right * Constants.AspectRatio);
                 CurrentLane = Lane.Right;
             }
         }
@@ -53,12 +53,12 @@ namespace GOSonic3D.Entity.Objects
         {
             if (CurrentLane == Lane.Middle)
             {
-                MoveToX((int)Lane.Left);
+                MoveToX((int)Lane.Left * Constants.AspectRatio);
                 CurrentLane = Lane.Left;
             }
             else if (CurrentLane == Lane.Right)
             {
-                MoveToX((int)Lane.Middle);
+                MoveToX((int)Lane.Middle * Constants.AspectRatio);
                 CurrentLane = Lane.Middle;
             }
         }
