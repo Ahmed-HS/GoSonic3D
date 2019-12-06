@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Tao.OpenGl;
 using GlmNet;
 using System.IO;
-using GOSonic3D._3D_Models;
 using GOSonic3D.Entity.Objects;
 using GOSonic3D.Entity;
 
@@ -29,11 +24,15 @@ namespace GOSonic3D
         int modelID;
         int viewID;
         int projID;
-        mat4 scaleMat;
         int EyePositionID;
+        int AmbientLightID;
+        int DataID;
+        mat4 scaleMat;
 
         mat4 ProjectionMatrix;
         mat4 ViewMatrix;
+
+        GameMap Map;
 
         public float Speed = 1;
         public Camera cam;
@@ -50,7 +49,9 @@ namespace GOSonic3D
 
             Sonic = new Md2Object(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
             MainMenu = new Menu();
+            Map = new GameMap();
             PlayingGame = false;
+
 
             //3.1
             NumOfSkyBoxFaces = 6;
@@ -59,7 +60,7 @@ namespace GOSonic3D
             {
                 SkyBox[i] = new Texture(projectPath + "\\Textures\\" + (i + 1).ToString() + ".jpg", i + 1, false);
             }
-        
+
 
             float[] vertTexCoord =
             {
@@ -73,69 +74,115 @@ namespace GOSonic3D
             float[] gleft = {
                  0.0f, 0.0f,  0.0f,   //0
                 0.0f, 0.0f, 1.0f, //R
+                1, 0, 0, //normal
+
                  0.0f, 0.0f, -1.0f,   //3
                 0.0f, 1.0f, 0.0f, //G
+                1, 0, 0, //normal
+
                  0.0f,  1.0f, -1.0f,  //4
                 0.0f, 0.0f, 1.0f, //B
+                1, 0, 0, //normal
+
                  0.0f,  1.0f, 0.0f,   //7
                 0.0f, 1.0f, 0.0f, //G                          
+                1, 0, 0, //normal
             };
             float[] gforward =
             {
                  0.0f, 0.0f, -1.0f,   //3
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                  1.0f, 0.0f, -1.0f,   //2
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                  1.0f,  1.0f, -1.0f,  //5
                 0.0f, 0.0f, 1.0f, //R
+                0, 1, 0, //normal
+
                  0.0f,  1.0f, -1.0f,  //4
                 0.0f, 0.0f, 1.0f, //R
+                0, 1, 0, //normal
+
             };
             float[] gright =
             {
                 1.0f, 0.0f, -1.0f,   //2
                 0.0f, 1.0f, 0.0f, //G   
+                0, 1, 0, //normal
+
                 1.0f, 0.0f, 0.0f,    //1
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                 1.0f,  1.0f, 0.0f,   //6
-                0.0f, 0.0f, 1.0f, //R                             
+                0.0f, 0.0f, 1.0f, //R            
+                0, 1, 0, //normal
+
                  1.0f,  1.0f, -1.0f,  //5
                 0.0f, 0.0f, 1.0f, //R
+                0, 1, 0, //normal
             };
             float[] gback =
             {
                  1.0f, 0.0f, 0.0f,    //1
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                  0.0f, 0.0f,  0.0f,   //0
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                  0.0f,  1.0f, 0.0f,   //7
                 0.0f, 0.0f, 1.0f, //R
+                0, 1, 0, //normal
+
                  1.0f,  1.0f, 0.0f,   //6
                 0.0f, 0.0f, 1.0f, //R
+                0, 1, 0, //normal
+
             };
             float[] gdown =
             {
                  0.0f, 0.0f,  0.0f,   //0
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                  1.0f, 0.0f, 0.0f,    //1
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
                  1.0f, 0.0f, -1.0f,   //2
                 0.0f, 1.0f, 0.0f, //G    
+                0, 1, 0, //normal
+
                  0.0f, 0.0f, -1.0f,   //3
                 0.0f, 1.0f, 0.0f, //G
+                0, 1, 0, //normal
+
             };
             float[] gup =
             {
                    0.0f,  1.0f, -1.0f, //4
                 0.0f, 0.0f, 1.0f, //R
+                0, -1, 0, //normal
+
                  1.0f,  1.0f, -1.0f,  //5
                 0.0f, 0.0f, 1.0f, //R
+                0, -1, 0, //normal
 
                  1.0f,  1.0f, 0.0f,   //6
                 0.0f, 0.0f, 1.0f, //R
+                0, -1, 0, //normal
+
                  0.0f,  1.0f, 0.0f,   //7
                 0.0f, 0.0f, 1.0f, //R                          
+                0, -1, 0, //normal
+
             };
+
 
             List<float[]> vertCoord;
             vertCoord = new List<float[]>();
@@ -148,11 +195,11 @@ namespace GOSonic3D
             vertCoord.Add(gdown);
 
             int scale = 75;
-            for(int i = 0; i < NumOfSkyBoxFaces; i++)
+            for (int i = 0; i < NumOfSkyBoxFaces; i++)
             {
-                for(int j = 0; j < vertCoord[i].Length; j++)
+                for (int j = 0; j < vertCoord[i].Length; j++)
                 {
-                    if(j % 6 == 0)
+                    if (j % 6 == 0)
                     {
                         vertCoord[i][j] -= .5f;
                     }
@@ -182,8 +229,6 @@ namespace GOSonic3D
 
             Gl.glClearColor(0, 0, 0.4f, 1);
 
-            modelID = Gl.glGetUniformLocation(sh.ID, "model");
-          
             cam = new Camera();
             cam.Reset(0, 34, 55, 0, 0, 0, 1, 0, 0);
 
@@ -191,19 +236,45 @@ namespace GOSonic3D
             ViewMatrix = cam.GetViewMatrix();
 
             scaleMat = glm.scale(new mat4(1), new vec3(2f, 2f, 2.0f));
-            transID = Gl.glGetUniformLocation(sh.ID, "model");
+            transID = Gl.glGetUniformLocation(sh.ID, "trans");
             projID = Gl.glGetUniformLocation(sh.ID, "projection");
             viewID = Gl.glGetUniformLocation(sh.ID, "view");
 
             sh.UseShader();
 
+            //ambientLight
+            //============
+            vec3 ambientLight = new vec3(1f, 1f, 1f);
+            AmbientLightID = Gl.glGetUniformLocation(sh.ID, "aL");
+            Gl.glUniform3fv(AmbientLightID, 1, ambientLight.to_array());
+
+            //LightPosition
+            //==============
+            int LightPositionID = Gl.glGetUniformLocation(sh.ID, "LightPosition_worldspace");
+            vec3 lightPosition = new vec3(5.0f, 10f, 20.0f);
+            //vec3 lightDirection = new vec3(1, 1, 1);
+            Gl.glUniform3fv(LightPositionID, 1, lightPosition.to_array());
+
+            //eye position.
+            EyePositionID = Gl.glGetUniformLocation(sh.ID, "EyePosition_worldspace");
+
+            //attenuation & specularExponent
+            //==================================
+            float attenuation = 100, specularExponent = 10;
+            vec2 data = new vec2(attenuation, specularExponent);
+            DataID = Gl.glGetUniformLocation(sh.ID, "data");
+            Gl.glUniform2fv(DataID, 1, data.to_array());
+
             Gl.glEnable(Gl.GL_DEPTH_TEST);
             Gl.glDepthFunc(Gl.GL_LESS);
+
+            Map.SetScale(glm.scale(new mat4(1), new vec3(20, 20, 20)));
+            Map.SetTranslat(glm.translate(new mat4(1), new vec3(0, 20, 0)));
         }
 
         public void Draw()
         {
-            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT|Gl.GL_DEPTH_BUFFER_BIT);
+            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
             sh.UseShader();
 
             Gl.glUniformMatrix4fv(transID, 1, Gl.GL_FALSE, scaleMat.to_array());
@@ -213,26 +284,36 @@ namespace GOSonic3D
             //Gl.glUniform3fv(EyePositionID, 1, cam.GetCameraPosition().to_array());
 
 
-            for (int i = 0; i < NumOfSkyBoxFaces; i++)
+            for (int i = 0; i < 1; i++)
             {
-                GPU.BindBuffer(vertexBufferIDs[i]);
+                GPU.BindBuffer(vertexBufferIDs[4]);
                 Gl.glEnableVertexAttribArray(0);
-                Gl.glVertexAttribPointer(0, 3, Gl.GL_FLOAT, Gl.GL_FALSE, 6 * sizeof(float), IntPtr.Zero);
+                Gl.glVertexAttribPointer(0, 3, Gl.GL_FLOAT, Gl.GL_FALSE, 9 * sizeof(float), IntPtr.Zero);
+
                 Gl.glEnableVertexAttribArray(1);
-                Gl.glVertexAttribPointer(1, 3, Gl.GL_FLOAT, Gl.GL_FALSE, 6 * sizeof(float), (IntPtr)(3 * sizeof(float)));
+                Gl.glVertexAttribPointer(1, 3, Gl.GL_FLOAT, Gl.GL_FALSE, 9 * sizeof(float), (IntPtr)(3 * sizeof(float)));
+
+                Gl.glEnableVertexAttribArray(3);
+                Gl.glVertexAttribPointer(2, 3, Gl.GL_FLOAT, Gl.GL_FALSE, 9 * sizeof(float), (IntPtr)(6 * sizeof(float)));
+
                 //6
-                GPU.BindBuffer(SkyBoxBufferID[i]);
+                GPU.BindBuffer(SkyBoxBufferID[4]);
                 Gl.glEnableVertexAttribArray(2);
                 Gl.glVertexAttribPointer(2, 2, Gl.GL_FLOAT, Gl.GL_FALSE, 0, IntPtr.Zero);
+                
+                SkyBox[4].Bind();
                 ////7
-                SkyBox[i].Bind();
+
                 //Gl.glDrawElements(Gl.GL_QUADS, 8 * 3, Gl.GL_UNSIGNED_SHORT, IntPtr.Zero);
-                //Gl.glDrawArrays(Gl.GL_TRIANGLES, 0, 6);
-                Gl.glDrawArrays(Gl.GL_QUADS, 0, 4);
+                //Gl.glDrawArrays(Gl.GL_TRIANGLES, 0, 3);
+                //Gl.glDrawArrays(Gl.GL_TRIANGLES, 3, 3);
+
+               Gl.glDrawArrays(Gl.GL_QUADS, 0, 4);
             }
 
-            Sonic.Draw(modelID);
-            MainMenu.Draw(modelID);
+            Sonic.Draw(transID);
+            MainMenu.Draw(transID);
+            //Map.Draw(transID);
 
         }
         public void Update(float deltaTime)

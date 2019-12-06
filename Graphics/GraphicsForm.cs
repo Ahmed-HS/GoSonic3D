@@ -13,6 +13,9 @@ namespace GOSonic3D
         Thread MainLoopThread;
 
         float deltaTime;
+
+        public int Width;
+        public int Height;
         public GOSonic3DForm()
         {
             InitializeComponent();
@@ -54,7 +57,7 @@ namespace GOSonic3D
 
         private void simpleOpenGlControl1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            float speed = 0.6f;
+            float speed = 1f;
             if (e.KeyChar == 'a')
                 renderer.cam.Strafe(-speed);
             if (e.KeyChar == 'd')
@@ -117,6 +120,7 @@ namespace GOSonic3D
             this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
+            
         }
 
         private void MoveCursor()
@@ -129,6 +133,13 @@ namespace GOSonic3D
 
         private void SimpleOpenGlControl1_Load(object sender, EventArgs e)
         {
+            Rectangle CurDisplay = Screen.FromControl(this).Bounds;
+
+            Width = CurDisplay.Width;
+            Height = CurDisplay.Height;
+
+           // simpleOpenGlControl1.Width = Width;
+            //simpleOpenGlControl1.Height = Height;
         }
     }
 }

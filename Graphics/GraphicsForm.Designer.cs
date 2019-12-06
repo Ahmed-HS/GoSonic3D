@@ -37,6 +37,7 @@
             this.simpleOpenGlControl1.AutoCheckErrors = false;
             this.simpleOpenGlControl1.AutoFinish = false;
             this.simpleOpenGlControl1.AutoMakeCurrent = true;
+            this.simpleOpenGlControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.simpleOpenGlControl1.AutoSwapBuffers = true;
             this.simpleOpenGlControl1.BackColor = System.Drawing.Color.Black;
             this.simpleOpenGlControl1.ColorBits = ((byte)(32));
@@ -44,7 +45,7 @@
             this.simpleOpenGlControl1.Location = new System.Drawing.Point(0, 0);
             this.simpleOpenGlControl1.Margin = new System.Windows.Forms.Padding(2);
             this.simpleOpenGlControl1.Name = "simpleOpenGlControl1";
-            this.simpleOpenGlControl1.Size = new System.Drawing.Size(2560, 1440);
+            this.simpleOpenGlControl1.Size = new System.Drawing.Size(1280, 1024);
             this.simpleOpenGlControl1.StencilBits = ((byte)(0));
             this.simpleOpenGlControl1.TabIndex = 0;
             this.simpleOpenGlControl1.Load += new System.EventHandler(this.SimpleOpenGlControl1_Load);
@@ -55,11 +56,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 749);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(1350, 729);
             this.Controls.Add(this.simpleOpenGlControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GOSonic3DForm";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GOSonic3D";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GOSonic3DForm_FormClosing);
             this.Load += new System.EventHandler(this.GOSonic3DForm_Load);
             this.ResumeLayout(false);
