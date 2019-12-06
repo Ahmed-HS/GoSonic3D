@@ -57,6 +57,7 @@ namespace GOSonic3D
 
             MainMenu = new Menu();
             Map = new GameMap();
+
             PlayingGame = false;
 
             //3.1

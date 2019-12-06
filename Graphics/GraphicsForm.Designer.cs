@@ -44,7 +44,7 @@
             this.simpleOpenGlControl1.Location = new System.Drawing.Point(0, 0);
             this.simpleOpenGlControl1.Margin = new System.Windows.Forms.Padding(2);
             this.simpleOpenGlControl1.Name = "simpleOpenGlControl1";
-            this.simpleOpenGlControl1.Size = new System.Drawing.Size(2560, 1440);
+            this.simpleOpenGlControl1.Size = new System.Drawing.Size(1366, 768);
             this.simpleOpenGlControl1.StencilBits = ((byte)(0));
             this.simpleOpenGlControl1.TabIndex = 0;
             this.simpleOpenGlControl1.Load += new System.EventHandler(this.SimpleOpenGlControl1_Load);

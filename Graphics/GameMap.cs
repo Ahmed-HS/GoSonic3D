@@ -42,7 +42,7 @@ namespace GOSonic3D
              */
             Position = new vec3(45, 588, 0) * Constants.AspectRatio;
             translateMatrix = glm.translate(new mat4(1), Position);
-            rotationMatrix = glm.rotate((-276f / 180f), new vec3(0, 1, 0));
+            rotationMatrix = glm.rotate((-90f / 180f) * (float)Math.PI, new vec3(0, 1, 0));
             scaleMatrix = glm.scale(new mat4(1), new vec3(200, 200, 200) * Constants.AspectRatio);
 
             for(int i = 0;i < assestsCount;++i)
