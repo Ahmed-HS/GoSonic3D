@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Graphics",
+    "\\Graphics\\3D Models",
+    "\\Graphics\\Entity",
+    "\\Graphics\\Entity\\Objects",
+    "\\Graphics\\Kernel"
+  ],
+  "SelectedNode": "\\Graphics\\Entity\\Objects\\MoveableObject.cs",
+  "PreviewInSolutionExplorer": false
+}

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using System.IO;
 using Tao.OpenGl;
 using GlmNet;
-using Graphics._3D_Models;
+using GOSonic3D._3D_Models;
+using GOSonic3D.Entity.Objects;
 
-namespace Graphics
+namespace GOSonic3D
 {
-    class GameMap
+    class GameMap : MoveableObject
     {
 
         Model3D[] MapComponents;
@@ -39,33 +40,40 @@ namespace Graphics
              8: palms
              9: GroundSides
              */
-            translateMatrix = glm.translate(new mat4(1), new vec3(0, 0, 0));
-            rotationMatrix = glm.rotate((0f / 180f), new vec3(0, 0, 0));
-            scaleMatrix = glm.scale(new mat4(1), new vec3(1, 1, 1));
+            Position = new vec3(45, 588, 0) * Constants.AspectRatio;
+            translateMatrix = glm.translate(new mat4(1), Position);
+            rotationMatrix = glm.rotate((-276f / 180f), new vec3(0, 1, 0));
+            scaleMatrix = glm.scale(new mat4(1), new vec3(200, 200, 200) * Constants.AspectRatio);
 
             for(int i = 0;i < assestsCount;++i)
             {
-
-
                 MapComponents[i] = new Model3D();
             }
 
             currPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\ModelFiles\\Models\\";
 
             Intialize();
+            ApplyTransformation();
+        }
+        public void Move()
+        {
+            UpdatePositon();
+            MoveToZ(Position.z + 20);
+            translateMatrix = glm.translate(new mat4(1), Position);
+            ApplyTransformation();
         }
         void Intialize()
         {
-            MapComponents[0].LoadFile(currPath, 3, "road.obj");
-            MapComponents[1].LoadFile(currPath, 3, "GroundTiles.obj");
-            MapComponents[2].LoadFile(currPath, 3, "Islands.obj");
-            MapComponents[3].LoadFile(currPath, 3, "HighRocks.obj");
-            MapComponents[4].LoadFile(currPath, 3, "LowRocks.obj");
-            MapComponents[5].LoadFile(currPath, 3, "MountainFall.obj");
-            MapComponents[6].LoadFile(currPath, 3, "WaterFall.obj");
-            MapComponents[7].LoadFile(currPath, 3, "Palms.obj");
-            MapComponents[8].LoadFile(currPath, 3, "RoadSides.obj");
-            MapComponents[9].LoadFile(currPath, 3, "HeadStarts.obj");
+            MapComponents[0].LoadFile(currPath, "road.obj", 3);
+            MapComponents[1].LoadFile(currPath, "GroundTiles.obj", 3);
+            MapComponents[2].LoadFile(currPath, "Islands.obj", 3);
+            MapComponents[3].LoadFile(currPath, "HighRocks.obj", 3);
+            MapComponents[4].LoadFile(currPath, "LowRocks.obj", 3);
+            MapComponents[5].LoadFile(currPath, "MountainFall.obj", 3);
+            MapComponents[6].LoadFile(currPath, "WaterFall.obj", 3);
+            MapComponents[7].LoadFile(currPath, "Palms.obj", 3);
+            MapComponents[8].LoadFile(currPath, "RoadSides.obj", 3);
+            MapComponents[9].LoadFile(currPath, "HeadStarts.obj", 3);
 
         }
 

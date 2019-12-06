@@ -29,6 +29,9 @@ namespace GOSonic3D
         }
         void initialize()
         {
+            float Width = Screen.PrimaryScreen.Bounds.Width;
+            float Height = Screen.PrimaryScreen.Bounds.Height;
+            Constants.AspectRatio = Width / Height;
             renderer.Initialize();   
         }
         void MainLoop()
@@ -67,7 +70,7 @@ namespace GOSonic3D
                 renderer.cam.Fly(-speed);
             if (e.KeyChar == 'c')
                 renderer.cam.Fly(speed);
-            if (e.KeyChar == ' ')
+            if (e.KeyChar == ' ' && renderer.PlayingGame)
             {
                 renderer.Sonic.Jump();
             }

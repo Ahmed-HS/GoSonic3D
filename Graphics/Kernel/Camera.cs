@@ -19,7 +19,7 @@ namespace GOSonic3D
         mat4 mProjectionMatrix;
         public Camera()
         {
-            Reset(0, 0, 5, 0, 0, 0, 0, 1, 0);
+            Reset(0, 585, 70, 0, 0, 0, 0, 1, 0);
             SetProjectionMatrix(45, 4 / 3, 0.1f, 1000);
         }
 
@@ -43,8 +43,8 @@ namespace GOSonic3D
         }
         public void Reset(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ)
         {
-            vec3 eyePos = new vec3(eyeX, eyeY, eyeZ);
-            vec3 centerPos = new vec3(centerX, centerY, centerZ);
+            vec3 eyePos = new vec3(eyeX, eyeY, eyeZ)*Constants.AspectRatio;
+            vec3 centerPos = new vec3(centerX, centerY, centerZ) * Constants.AspectRatio;
             vec3 upVec = new vec3(upX, upY, upZ);
 
             mPosition = eyePos;

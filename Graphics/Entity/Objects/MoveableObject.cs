@@ -37,7 +37,7 @@ namespace GOSonic3D.Entity.Objects
 
         public void MoveToX(float TargetX,float SpeedX=0)
         {
-            this.Target.x = TargetX;
+            this.Target.x = TargetX * Constants.AspectRatio;
             FinishedMovement.x = 0;
             if (SpeedX == 0)
             {
@@ -106,7 +106,7 @@ namespace GOSonic3D.Entity.Objects
 
         public void MoveToZ(float TargetZ, float SpeedZ=0)
         {
-            this.Target.z = TargetZ;
+            this.Target.z = TargetZ * Constants.AspectRatio;
             FinishedMovement.z = 0;
             if (SpeedZ == 0)
             {
@@ -146,6 +146,21 @@ namespace GOSonic3D.Entity.Objects
         public void TranslateBy(vec3 Displacement)
         {
             MoveTo(new vec3(Position.x + Displacement.x, Position.y + Displacement.y, Position.z + Displacement.z));
+        }
+
+        public void TranslateByX(float Displacement,float SpeedX= 0)
+        {
+            MoveToX(Position.x + Displacement,SpeedX);
+        }
+
+        public void TranslateByY(float Displacement, float SpeedY = 0)
+        {
+            MoveToY(Position.y + Displacement, SpeedY);
+        }
+
+        public void TranslateByZ(float Displacement, float SpeedZ = 0)
+        {
+            MoveToZ(Position.z + Displacement, SpeedZ);
         }
 
         public void ChangeVelocity(vec3 newSpeed)
@@ -203,7 +218,15 @@ namespace GOSonic3D.Entity.Objects
         {
             if ((Target.x > Position.x && CurrentVelocity.x > 0) || (Target.x < Position.x && CurrentVelocity.x < 0))
             {
-                Position.x += CurrentVelocity.x;
+                if (Math.Abs(Position.x + CurrentVelocity.x - Target.x) > Math.Abs(Position.x - Target.x))
+                {
+                    Position.x += Math.Abs(Position.x - Target.x)/2;
+                }
+                else
+                {
+                    Position.x += CurrentVelocity.x;
+                }
+
                 if (Math.Abs(CurrentVelocity.x) < MaxVelocity.x)
                 {
                     CurrentVelocity.x += Acceleration.x;
@@ -216,7 +239,15 @@ namespace GOSonic3D.Entity.Objects
 
             if ((Target.y > Position.y && CurrentVelocity.y > 0) || (Target.y < Position.y && CurrentVelocity.y < 0))
             {
-                Position.y += CurrentVelocity.y;
+                if (Math.Abs(Position.y + CurrentVelocity.y - Target.y) > Math.Abs(Position.y - Target.y))
+                {
+                    Position.y += Math.Abs(Position.y - Target.y) / 2;
+                }
+                else
+                {
+                    Position.y += CurrentVelocity.y;
+                }
+
                 if (Math.Abs(CurrentVelocity.y) < MaxVelocity.y)
                 {
                     CurrentVelocity.y += Acceleration.y;
@@ -229,7 +260,15 @@ namespace GOSonic3D.Entity.Objects
 
             if ((Target.z > Position.z && CurrentVelocity.z > 0) || (Target.z < Position.z && CurrentVelocity.z < 0))
             {
-                Position.z += CurrentVelocity.z;
+                if (Math.Abs(Position.z + CurrentVelocity.z - Target.z) > Math.Abs(Position.z - Target.z))
+                {
+                    Position.z += Math.Abs(Position.z - Target.z) / 2;
+                }
+                else
+                {
+                    Position.z += CurrentVelocity.z;
+                }
+
                 if (Math.Abs(CurrentVelocity.z) < MaxVelocity.z)
                 {
                     CurrentVelocity.z += Acceleration.z;

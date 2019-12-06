@@ -11,14 +11,14 @@ namespace GOSonic3D.Entity
     {
         public int Selected;
         public Text3D[] Buttons;
-        public int ButtonSize;
+        public float ButtonSize;
         public Menu()
         {
             Buttons = new Text3D[2];
-            Buttons[0] = new Text3D("Play",new vec3(-10,40,0));
-            Buttons[1] = new Text3D("Exit", new vec3(-10, 30, 0));
+            Buttons[0] = new Text3D("Play",new vec3(-10,1050,0));
+            Buttons[1] = new Text3D("Exit", new vec3(-10, 1040, 0));
             Selected = 0;
-            ButtonSize = 5;
+            ButtonSize = Buttons[0].Scale;
         }
 
         public void HideMenu()

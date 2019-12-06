@@ -135,9 +135,7 @@ namespace GOSonic3D
             Dimensions.x = BoundingBox[0] - BoundingBox[1];
             Dimensions.y = BoundingBox[2] - BoundingBox[3];
             Dimensions.z = BoundingBox[4] - BoundingBox[5];
-            Console.WriteLine("X : " + Dimensions.x);
-            Console.WriteLine("Y : " + Dimensions.y);
-            Console.WriteLine("Z : " + Dimensions.z);
+
         }
         public void Draw(int matID)
         {

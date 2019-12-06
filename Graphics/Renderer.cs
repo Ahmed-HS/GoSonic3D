@@ -13,6 +13,10 @@ using GOSonic3D.Entity;
 
 namespace GOSonic3D
 {
+    static class Constants
+    {
+        public static float AspectRatio;
+    }
     class Renderer
     {
         //0.1
@@ -37,10 +41,11 @@ namespace GOSonic3D
 
         public float Speed = 1;
         public Camera cam;
-        public Md2Object Sonic;
+        public Character Sonic;
         public Menu MainMenu;
+        GameMap Map;
+        
         public bool PlayingGame;
-
         public void Initialize()
         {
 
@@ -48,8 +53,10 @@ namespace GOSonic3D
             sh = new Shader(projectPath + "\\Shaders\\SimpleVertexShader.vertexshader", projectPath + "\\Shaders\\SimpleFragmentShader.fragmentshader");
 
 
-            Sonic = new Md2Object(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
+            Sonic = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
+
             MainMenu = new Menu();
+            Map = new GameMap();
             PlayingGame = false;
 
             //3.1
@@ -147,14 +154,14 @@ namespace GOSonic3D
             vertCoord.Add(gup);
             vertCoord.Add(gdown);
 
-            int scale = 75;
+            float scale = 1000*Constants.AspectRatio;
             for(int i = 0; i < NumOfSkyBoxFaces; i++)
             {
                 for(int j = 0; j < vertCoord[i].Length; j++)
                 {
                     if(j % 6 == 0)
                     {
-                        vertCoord[i][j] -= .5f;
+                        vertCoord[i][j] -= .5f;                   
                     }
 
                     if ((j - 2) % 6 == 0)
@@ -185,7 +192,6 @@ namespace GOSonic3D
             modelID = Gl.glGetUniformLocation(sh.ID, "model");
           
             cam = new Camera();
-            cam.Reset(0, 34, 55, 0, 0, 0, 1, 0, 0);
 
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
@@ -233,6 +239,7 @@ namespace GOSonic3D
 
             Sonic.Draw(modelID);
             MainMenu.Draw(modelID);
+            Map.Draw(modelID);
 
         }
         public void Update(float deltaTime)
@@ -241,6 +248,7 @@ namespace GOSonic3D
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
             Sonic.UpdateMovement();
+            Map.Move();
             MainMenu.UpdateMenu();
         }
         public void CleanUp()
