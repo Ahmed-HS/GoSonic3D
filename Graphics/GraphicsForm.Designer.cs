@@ -44,7 +44,7 @@
             this.simpleOpenGlControl1.Location = new System.Drawing.Point(0, 0);
             this.simpleOpenGlControl1.Margin = new System.Windows.Forms.Padding(2);
             this.simpleOpenGlControl1.Name = "simpleOpenGlControl1";
-            this.simpleOpenGlControl1.Size = new System.Drawing.Size(1366, 768);
+            this.simpleOpenGlControl1.Size = new System.Drawing.Size(800, 600);
             this.simpleOpenGlControl1.StencilBits = ((byte)(0));
             this.simpleOpenGlControl1.TabIndex = 0;
             this.simpleOpenGlControl1.Load += new System.EventHandler(this.SimpleOpenGlControl1_Load);
@@ -60,6 +60,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GOSonic3DForm";
             this.Text = "GOSonic3D";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GOSonic3DForm_FormClosing);
             this.Load += new System.EventHandler(this.GOSonic3DForm_Load);
             this.ResumeLayout(false);

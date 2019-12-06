@@ -15,16 +15,28 @@ namespace GOSonic3D
         float deltaTime;
         public GOSonic3DForm()
         {
+
+
+
             InitializeComponent();
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+
+            this.Bounds = Screen.PrimaryScreen.Bounds;
+            this.simpleOpenGlControl1.Bounds = Screen.PrimaryScreen.Bounds;
+
+
             simpleOpenGlControl1.InitializeContexts();
 
-            //MoveCursor();
-            
+
 
             initialize();
             deltaTime = 0.005f;
             MainLoopThread = new Thread(MainLoop);
             MainLoopThread.Start();
+
+
 
         }
         void initialize()
@@ -100,6 +112,7 @@ namespace GOSonic3D
                 }
                 else if (renderer.MainMenu.Selected == 1)
                 {
+                    Console.WriteLine(this.simpleOpenGlControl1.Bounds);
                     this.Close();
                 }
             }
@@ -117,9 +130,6 @@ namespace GOSonic3D
 
         private void GOSonic3DForm_Load(object sender, EventArgs e)
         {
-            this.TopMost = true;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
         }
 
         private void MoveCursor()
@@ -132,6 +142,7 @@ namespace GOSonic3D
 
         private void SimpleOpenGlControl1_Load(object sender, EventArgs e)
         {
+
         }
     }
 }
