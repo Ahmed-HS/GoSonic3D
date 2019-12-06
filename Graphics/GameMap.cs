@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using Tao.OpenGl;
 using GlmNet;
-using Graphics._3D_Models;
 
-namespace Graphics
+namespace GOSonic3D
 {
     class GameMap
     {
@@ -56,16 +50,16 @@ namespace Graphics
         }
         void Intialize()
         {
-            MapComponents[0].LoadFile(currPath, 3, "road.obj");
-            MapComponents[1].LoadFile(currPath, 3, "GroundTiles.obj");
-            MapComponents[2].LoadFile(currPath, 3, "Islands.obj");
-            MapComponents[3].LoadFile(currPath, 3, "HighRocks.obj");
-            MapComponents[4].LoadFile(currPath, 3, "LowRocks.obj");
-            MapComponents[5].LoadFile(currPath, 3, "MountainFall.obj");
-            MapComponents[6].LoadFile(currPath, 3, "WaterFall.obj");
-            MapComponents[7].LoadFile(currPath, 3, "Palms.obj");
-            MapComponents[8].LoadFile(currPath, 3, "RoadSides.obj");
-            MapComponents[9].LoadFile(currPath, 3, "HeadStarts.obj");
+            MapComponents[0].LoadFile(currPath, "road.obj", 3);
+            MapComponents[1].LoadFile(currPath, "GroundTiles.obj", 3);
+            MapComponents[2].LoadFile(currPath, "Islands.obj", 3);
+            MapComponents[3].LoadFile(currPath, "HighRocks.obj", 3);
+            MapComponents[4].LoadFile(currPath, "LowRocks.obj", 3);
+            MapComponents[5].LoadFile(currPath, "MountainFall.obj", 3);
+            MapComponents[6].LoadFile(currPath, "WaterFall.obj", 3);
+            MapComponents[7].LoadFile(currPath, "Palms.obj", 3);
+            MapComponents[8].LoadFile(currPath, "RoadSides.obj", 3);
+            MapComponents[9].LoadFile(currPath, "HeadStarts.obj", 3);
 
         }
 
