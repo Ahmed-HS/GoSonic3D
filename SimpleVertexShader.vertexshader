@@ -1,0 +1,28 @@
+#version 330 core
+
+layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 2) in vec2 texCoord;
+layout(location = 3) in vec3 vertexColor;
+
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+
+out VS_OUT {
+    vec3 FragPos;
+    vec3 Normal;
+    vec2 TexCoords;
+} vs_out;
+
+void main(){
+        vs_out.FragPos = vertexPosition_modelspace;
+        vs_out.Normal = vertexColor;
+    	vs_out.TexCoords = texCoord;
+
+	gl_Position =  projection *
+		       view * 
+		       model * 
+		       vec4(vertexPosition_modelspace, 1);
+}
+
+
