@@ -64,7 +64,7 @@ namespace GOSonic3D
             TranslateByZ(20,2);
             translateMatrix = glm.translate(new mat4(1), Position);
             ApplyTransformation();
-            Console.WriteLine("Length: " + (Position.z - StartZ));
+            //Console.WriteLine("Length: " + (Position.z - StartZ));
         }
         void Intialize()
         {

@@ -64,7 +64,7 @@ namespace GOSonic3D
                 Enemies[i] = new Enemy(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", Sonic);
             }
 
-            Constants.GameSound = new System.Media.SoundPlayer(@"E:\Projects\Go Sonic\x64\Release\Audio\3.wav");
+            Constants.GameSound = new System.Media.SoundPlayer(projectPath + "\\Audio\\2.wav");
             Constants.GameSound.PlayLooping();
 
             Constants.MainMenu = new Menu();
@@ -301,8 +301,8 @@ namespace GOSonic3D
                 Console.WriteLine("Map1");
             }
 
-            Map[0].Move();
-            Map[1].Move();
+            Task.Run(() => Map[0].Move());
+            Task.Run(() => Map[1].Move());
 
         }
 
@@ -318,7 +318,7 @@ namespace GOSonic3D
             }
             Task.Run(() => MoveMap());
 
-            Constants.MainMenu.UpdateMenu();
+            Task.Run(() => Constants.MainMenu.UpdateMenu());
         }
 
         public void CleanUp()
