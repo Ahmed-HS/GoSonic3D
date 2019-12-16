@@ -20,10 +20,12 @@ namespace GOSonic3D
                 return ProgramID;
             }
         }
+
         public Shader(string vertex_shader_file_path, string fragment_shader_file_path)
         {
             ProgramID = LoadShaders(vertex_shader_file_path, fragment_shader_file_path);
         }
+
         int LoadShaders(string vs_path, string fs_path)
         {
             int vertexShaderID = Gl.glCreateShader(Gl.GL_VERTEX_SHADER);
@@ -113,10 +115,12 @@ namespace GOSonic3D
             Gl.glDeleteShader(fragmentShaderID);
             return ProgramID;
         }
+
         public void UseShader()
         {
             Gl.glUseProgram(ProgramID);
         }
+
         public void DestroyShader()
         {
             Gl.glDeleteProgram(ProgramID);

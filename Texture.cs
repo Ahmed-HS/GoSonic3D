@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Tao.OpenGl;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace GOSonic3D
 {
@@ -91,7 +92,7 @@ namespace GOSonic3D
                     width = bitmap.Width;
                     height = bitmap.Height;
 
-                    Gl.glTexImage2D(Gl.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, Gl.GL_RGBA, width, height, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bitmapData.Scan0);
+                    Gl.glTexImage2D(Gl.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, Gl.GL_RGBA, width, height, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, bitmapData.Scan0);
 
                     if (bitmap != null)
                     {
@@ -103,6 +104,7 @@ namespace GOSonic3D
                 {
                     width = 0;
                     height = 0;
+                    MessageBox.Show(ex.Message);
                 }
             }
 

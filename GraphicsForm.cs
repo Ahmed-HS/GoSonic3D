@@ -80,49 +80,52 @@ namespace GOSonic3D
                 renderer.cam.Fly(-speed);
             if (e.KeyChar == 'c')
                 renderer.cam.Fly(speed);
-            if (e.KeyChar == ' ')
+            if (e.KeyChar == ' ' && renderer.PlayingGame)
             {
-                renderer.Sonic.ToggleJump();
+                renderer.Sonic.Jump();
             }
-            if (e.KeyChar == 'l')
+            if (e.KeyChar == 'l' && renderer.PlayingGame)
             {
                 renderer.Sonic.ShiftRight();       
             }
-            if (e.KeyChar == 'k')
+            if (e.KeyChar == 'k' && renderer.PlayingGame)
             {
                 renderer.Sonic.ShiftLeft();
             }
             if (e.KeyChar == 'p')
             {
-                Constants.MainMenu.MoveDown();
+                renderer.MainMenu.MoveDown();
             }
             if (e.KeyChar == 'o')
             {
-                Constants.MainMenu.MoveUp();
+                renderer.MainMenu.MoveUp();
             }
             if (e.KeyChar == '\r')
             {
-                if (Constants.MainMenu.Selected == 0)
+                if (renderer.MainMenu.Selected == 0)
                 {
-                    Constants.MainMenu.HideMenu();
+                    renderer.MainMenu.HideMenu();
                     renderer.Sonic.Show();
-                    Constants.PlayingGame = true;
+                    renderer.PlayingGame = true;
                 }
-                else if (Constants.MainMenu.Selected == 1)
+                else if (renderer.MainMenu.Selected == 1)
                 {
+                    Console.WriteLine(this.simpleOpenGlControl1.Bounds);
                     this.Close();
                 }
             }
             if (e.KeyChar == 'x')
             {
+                Console.WriteLine(this.simpleOpenGlControl1.Bounds);
                 this.Close();
             }
+
             if (e.KeyChar == '\b')
             {
-                if (Constants.PlayingGame)
+                if (renderer.PlayingGame)
                 {
                     renderer.Sonic.Hide();
-                    Constants.MainMenu.ShowMenu();
+                    renderer.MainMenu.ShowMenu();
                 }
             }
 

@@ -24,10 +24,12 @@ namespace GOSonic3D
         mat4 rotationMatrix;
         mat4 scaleMatrix;
 
-
+        public const float MapLength = 1760;
+        public float StartZ;
+        public bool IsMoving;
         public GameMap(vec3 MapPosition)
         {
-            assestsCount = 10;
+            assestsCount = 9;
             MapComponents = new Model3D[assestsCount];
             /* 
              1: road
@@ -54,18 +56,15 @@ namespace GOSonic3D
 
             Intialize();
             ApplyTransformation();
+            StartZ = Position.z;
         }
         public void Move()
         {
             UpdatePositon();
-            MoveToZ(Position.z + 20);
-            if (Position.z >= 1150)
-            {
-                Position.z = -900;
-            }
+            TranslateByZ(20,2);
             translateMatrix = glm.translate(new mat4(1), Position);
             ApplyTransformation();
-            Console.WriteLine("Z: " + Position.z);
+            Console.WriteLine("Length: " + (Position.z - StartZ));
         }
         void Intialize()
         {
@@ -76,12 +75,19 @@ namespace GOSonic3D
             MapComponents[4].LoadFile(currPath, "LowRocks.obj", 3);
             MapComponents[5].LoadFile(currPath, "MountainFall.obj", 3);
             MapComponents[6].LoadFile(currPath, "WaterFall.obj", 3);
-            MapComponents[7].LoadFile(currPath, "Palms.obj", 3);
-            MapComponents[8].LoadFile(currPath, "RoadSides.obj", 3);
-            MapComponents[9].LoadFile(currPath, "HeadStarts.obj", 3);
+            //MapComponents[7].LoadFile(currPath, "Palms.obj", 3);
+            MapComponents[7].LoadFile(currPath, "RoadSides.obj", 3);
+            MapComponents[8].LoadFile(currPath, "HeadStarts.obj", 3);
 
         }
-
+        public bool FinishedMap(int Count = 1)
+        {
+            return Position.z - StartZ >= MapLength*Count;
+        }
+        public void SetPositionZ(float NewZ)
+        {
+            Position.z = NewZ;
+        }
         public void SetTranslat(mat4 translation)
         {
             translateMatrix = translation;
