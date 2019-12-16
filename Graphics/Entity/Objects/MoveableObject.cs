@@ -35,6 +35,12 @@ namespace GOSonic3D.Entity.Objects
             IntialVelocity = CurrentVelocity;
         }
 
+        public void SetPostionZ(float PositionZ)
+        {
+            Position.z = PositionZ;
+            Target.z = PositionZ;
+        }
+
         public void MoveToX(float TargetX,float SpeedX=0)
         {
             this.Target.x = TargetX;
@@ -294,6 +300,11 @@ namespace GOSonic3D.Entity.Objects
         public double DistanceFrom(MoveableObject Target)
         {
             return Math.Sqrt(Math.Pow(Position.x - Target.Position.x,2) + Math.Pow(Position.y - Target.Position.y, 2) + Math.Pow(Position.z - Target.Position.z, 2));
+        }
+
+        public bool DetectCollision(MoveableObject Target)
+        {
+            return DistanceFrom(Target) < 1.5f;
         }
 
     }

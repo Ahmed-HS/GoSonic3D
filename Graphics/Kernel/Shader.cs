@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Tao.OpenGl;
 using System.Windows.Forms;
+using GlmNet;
+
 namespace GOSonic3D
 {
     class Shader
@@ -118,6 +120,26 @@ namespace GOSonic3D
         public void DestroyShader()
         {
             Gl.glDeleteProgram(ProgramID);
+        }
+
+        public void setVec3(string name, vec3 value)
+        {
+            Gl.glUniform3fv(Gl.glGetUniformLocation(ID, name), 1, value.to_array());
+        }
+
+        public void setMat4(string name, mat4 mat)
+        {
+            Gl.glUniformMatrix4fv(Gl.glGetUniformLocation(ID, name), 1, Gl.GL_FALSE, mat.to_array());
+        }
+
+        public void setFloat(string name, float value)
+        {
+            Gl.glUniform1f(Gl.glGetUniformLocation(ID, name), value);
+        }
+
+        public void setInt(string name, int value)
+        {
+            Gl.glUniform1i(Gl.glGetUniformLocation(ID, name), value);
         }
     }
 }

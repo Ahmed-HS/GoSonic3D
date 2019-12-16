@@ -80,47 +80,49 @@ namespace GOSonic3D
                 renderer.cam.Fly(-speed);
             if (e.KeyChar == 'c')
                 renderer.cam.Fly(speed);
-            if (e.KeyChar == ' ' && renderer.PlayingGame)
+            if (e.KeyChar == ' ')
             {
-                renderer.Sonic.Jump();
+                renderer.Sonic.ToggleJump();
             }
-            if (e.KeyChar == 'l' && renderer.PlayingGame)
+            if (e.KeyChar == 'l')
             {
                 renderer.Sonic.ShiftRight();       
             }
-            if (e.KeyChar == 'k' && renderer.PlayingGame)
+            if (e.KeyChar == 'k')
             {
                 renderer.Sonic.ShiftLeft();
             }
             if (e.KeyChar == 'p')
             {
-                renderer.MainMenu.MoveDown();
+                Constants.MainMenu.MoveDown();
             }
             if (e.KeyChar == 'o')
             {
-                renderer.MainMenu.MoveUp();
+                Constants.MainMenu.MoveUp();
             }
             if (e.KeyChar == '\r')
             {
-                if (renderer.MainMenu.Selected == 0)
+                if (Constants.MainMenu.Selected == 0)
                 {
-                    renderer.MainMenu.HideMenu();
+                    Constants.MainMenu.HideMenu();
                     renderer.Sonic.Show();
-                    renderer.PlayingGame = true;
+                    Constants.PlayingGame = true;
                 }
-                else if (renderer.MainMenu.Selected == 1)
+                else if (Constants.MainMenu.Selected == 1)
                 {
-                    Console.WriteLine(this.simpleOpenGlControl1.Bounds);
                     this.Close();
                 }
             }
-
+            if (e.KeyChar == 'x')
+            {
+                this.Close();
+            }
             if (e.KeyChar == '\b')
             {
-                if (renderer.PlayingGame)
+                if (Constants.PlayingGame)
                 {
                     renderer.Sonic.Hide();
-                    renderer.MainMenu.ShowMenu();
+                    Constants.MainMenu.ShowMenu();
                 }
             }
 

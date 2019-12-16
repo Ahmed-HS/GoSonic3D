@@ -85,6 +85,7 @@
     <Compile Include="3D Models\md2LOL.cs" />
     <Compile Include="Entity\Menu.cs" />
     <Compile Include="Entity\Objects\Character.cs" />
+    <Compile Include="Entity\Objects\Enemy.cs" />
     <Compile Include="Entity\Objects\MoveableObject.cs" />
     <Compile Include="Entity\Text3D.cs" />
     <Compile Include="GameMap.cs" />

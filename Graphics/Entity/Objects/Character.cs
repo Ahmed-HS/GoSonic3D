@@ -20,11 +20,13 @@ namespace GOSonic3D.Entity.Objects
         public Lane CurrentLane = Lane.Middle;
 
         public bool IsJumping;
+        public bool IsDieing;
         public float Scale;
         public float GroundY;
-        public void Jump()
+        vec3 IntialPosition;
+        public void ToggleJump()
         {
-            if (!IsJumping)
+            if (!IsJumping && Constants.PlayingGame)
             {
                 IsJumping = true;
                 StartAnimation((animType)2);
@@ -35,8 +37,26 @@ namespace GOSonic3D.Entity.Objects
             }
         }
 
+        public void ToggleDeath()
+        {
+            if (!IsDieing)
+            {
+                IsDieing = true;
+                StartAnimation((animType)2);
+                TranslateByY(80, 4.5f);
+                Console.WriteLine("Jump Presed");
+                Console.WriteLine("Velocity :" + CurrentVelocity.y);
+                Console.WriteLine("acc :" + Acceleration.y);
+            }
+        }
+
         public void ShiftRight()
         {
+            if (!Constants.PlayingGame)
+            {
+                return;
+            }
+
             if (CurrentLane == Lane.Left)
             {
                 MoveToX((int)Lane.Middle *Constants.AspectRatio);
@@ -51,6 +71,11 @@ namespace GOSonic3D.Entity.Objects
 
         public void ShiftLeft()
         {
+            if (!Constants.PlayingGame)
+            {
+                return;
+            }
+
             if (CurrentLane == Lane.Middle)
             {
                 MoveToX((int)Lane.Left * Constants.AspectRatio);
@@ -63,41 +88,88 @@ namespace GOSonic3D.Entity.Objects
             }
         }
 
+        public void Die()
+        {
+            if (Acceleration.y > 0)
+            {
+                CurrentVelocity.y += -(Acceleration.y * 2);
+                Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
+                //Console.WriteLine("Current Position : " + Position.y);
+            }
+            else
+            {
+                CurrentVelocity.y += -Acceleration.y - 0.05f;
+                Console.WriteLine("Down");
+            }
+
+
+            if ((Acceleration.y > 0 && (CurrentVelocity.y <= 0)))
+            {
+                MoveToY(GroundY - 200, 0.5f);
+                //Target.y = GroundY;
+                Console.WriteLine("Top");
+                //Console.WriteLine("Velocity :" + CurrentVelocity.y);
+                Console.WriteLine("acc :" + Acceleration.y);
+            }
+
+            if (Acceleration.y < 0 && FinishedMovement.y == 1)
+            {
+                IsDieing = false;
+                StartAnimation((animType)0);
+                CurrentVelocity.y = 0;
+                Position = IntialPosition;
+                Constants.MainMenu.ShowMenu();
+                Hide();
+                Console.WriteLine("Ground");
+            }
+        }
+
+        void Jump()
+        {
+            if (Acceleration.y > 0)
+            {
+                CurrentVelocity.y += -(Acceleration.y * 2);
+                Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
+                //Console.WriteLine("Current Position : " + Position.y);
+            }
+            else
+            {
+                CurrentVelocity.y += -Acceleration.y - 0.05f;
+                Console.WriteLine("Down");
+            }
+
+
+            if ((Acceleration.y > 0 && (ReachedTarget() || CurrentVelocity.y <= 0)))
+            {
+                MoveToY(GroundY, 0.5f);
+                //Target.y = GroundY;
+                Console.WriteLine("Top");
+                //Console.WriteLine("Velocity :" + CurrentVelocity.y);
+                Console.WriteLine("acc :" + Acceleration.y);
+            }
+
+            if (Acceleration.y < 0 && FinishedMovement.y == 1)
+            {
+                IsJumping = false;
+                StartAnimation((animType)0);
+                CurrentVelocity.y = 0;
+                Console.WriteLine("Ground");
+            }
+        }
+
         public override void UpdateMovement()
         {          
-            if (IsJumping)
+            if (IsJumping && !IsDieing)
             {
-                if (Acceleration.y > 0)
-                {
-                    CurrentVelocity.y += -(Acceleration.y * 2);
-                    Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
-                    //Console.WriteLine("Current Position : " + Position.y);
-                }
-                else
-                {
-                    CurrentVelocity.y += -Acceleration.y - 0.05f;
-                    Console.WriteLine("Down");
-                }
-
-
-                if((Acceleration.y > 0 && (ReachedTarget() || CurrentVelocity.y <= 0)))
-                {
-                    MoveToY(GroundY,0.5f);
-                    //Target.y = GroundY;
-                    Console.WriteLine("Top");
-                    //Console.WriteLine("Velocity :" + CurrentVelocity.y);
-                    Console.WriteLine("acc :" + Acceleration.y);
-                }
-
-                if (Acceleration.y < 0 && FinishedMovement.y == 1)
-                {
-                    IsJumping = false;
-                    StartAnimation((animType)0);
-                    CurrentVelocity.y = 0;
-                    Console.WriteLine("Ground");
-                }
+                Jump();
                 //Console.WriteLine("Jumping :" + CurrentVelocity.y + "   " + Acceleration.y);
             }
+
+            if (IsDieing)
+            {
+                Die();
+            }
+
             UpdatePositon();
             UpdateAnimationAndMove();
         }
@@ -122,6 +194,7 @@ namespace GOSonic3D.Entity.Objects
             Scale = 2*Constants.AspectRatio;
             scaleMatrix = glm.scale(new mat4(1), new vec3(0, 0, 0));
             Position = new vec3(0, 550, -20 ) * Constants.AspectRatio;
+            IntialPosition = Position;
             GroundY = Position.y;
             Target = Position;
             IsJumping = false;
