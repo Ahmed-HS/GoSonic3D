@@ -64,5 +64,17 @@ namespace GOSonic3D.Entity
         {
             Buttons[Selected].UpdateMovement();
         }
+
+        public void SetPositionZ(float PositionZ)
+        {
+            for (int i = 0; i < Buttons.Length; i++)
+            {
+                for (int j = 0; j < Buttons[i].Characters.Count; j++)
+                {
+                    Buttons[i].Characters[j].SetPostionZ(PositionZ);
+                    Buttons[i].Characters[j].Move();
+                }
+            }
+        }
     }
 }

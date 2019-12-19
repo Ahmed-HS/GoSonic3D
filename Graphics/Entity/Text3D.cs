@@ -60,11 +60,11 @@ namespace GOSonic3D.Entity
         }
         public  void UpdateMovement()
         {
+            
             if (!Moving)
             {
                 for (int i = 0; i < Characters.Count; i++)
                 {
-                    //Characters[i].TranslateBy(new vec3(AnimationTransitions[CurrentTransition], 0, 0));
                     Characters[i].MoveToX(Characters[i].Position.x + AnimationTransitions[CurrentTransition]);
                 }
                 CurrentTransition = (CurrentTransition + 1) % AnimationTransitions.Length;
@@ -85,6 +85,7 @@ namespace GOSonic3D.Entity
 
             for (int i = 0; i < Characters.Count; i++)
             {
+                //Characters[i].TranslateByZ(-20, 0.2f);
                 Characters[i].UpdatePositon();
                 Characters[i].Move();
             }

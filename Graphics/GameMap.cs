@@ -24,11 +24,13 @@ namespace GOSonic3D
         mat4 rotationMatrix;
         mat4 scaleMatrix;
 
-        public const float MapLength = 1760;
+        public const float MapLength = 1100;
         public float StartZ;
         public bool IsMoving;
-        public GameMap(vec3 MapPosition)
+        MoveableObject Camera;
+        public GameMap(vec3 MapPosition,MoveableObject Camera)
         {
+            this.Camera = Camera;
             assestsCount = 9;
             MapComponents = new Model3D[assestsCount];
             /* 
@@ -80,13 +82,24 @@ namespace GOSonic3D
             MapComponents[8].LoadFile(currPath, "HeadStarts.obj", 3);
 
         }
-        public bool FinishedMap(int Count = 1)
+        public bool FinishedMap()
         {
-            return Position.z - StartZ >= MapLength*Count;
+            //Console.WriteLine("End : " + (StartZ - MapLength).ToString());
+            //Console.WriteLine("Sonic : " + (Camera.Position.z).ToString());
+            return StartZ - MapLength  >= Camera.Position.z;
         }
+
+        public void ResesMap()
+        {
+            SetPositionZ(Camera.Position.z - (740*Constants.AspectRatio) - MapLength);
+            StartZ = Camera.Position.z - (740 * Constants.AspectRatio) - MapLength;
+        }
+
         public void SetPositionZ(float NewZ)
         {
             Position.z = NewZ;
+            translateMatrix = glm.translate(new mat4(1), Position);
+            ApplyTransformation();
         }
         public void SetTranslat(mat4 translation)
         {

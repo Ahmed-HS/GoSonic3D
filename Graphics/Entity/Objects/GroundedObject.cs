@@ -2,20 +2,30 @@
 using GOSonic3D._3D_Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GOSonic3D.Entity.Objects
 {
-    class Enemy : md2
+    class GroundedObject : md2
     {
+        public enum Type
+        {
+            Enemy,Ring
+        }
+
         Character Player;
         Random MyRandom;
         float[] Lanes;
         float Scale;
-        public Enemy(string FilePath,Character Player) : base(FilePath)
+        MoveableObject Camera;
+        Type ObjectType;
+        public GroundedObject(string FilePath,Character Player, MoveableObject Camera,Type ObjectType) : base(FilePath)
         {
+            this.ObjectType = ObjectType;
+            this.Camera = Camera;
             this.Player = Player;
             MyRandom = new Random();
             Lanes = new float[3];
@@ -33,17 +43,41 @@ namespace GOSonic3D.Entity.Objects
             Target = Position;
         }
 
+        public bool OffScreen()
+        {
+            //Console.WriteLine("End : " + (StartZ - MapLength).ToString());
+            //Console.WriteLine("Sonic : " + (Camera.Position.z).ToString());
+            return Position.z >= Camera.Position.z;
+        }
+
+        public void Respawn()
+        {
+            SetPostionZ(Camera.Position.z - 770 - GameMap.MapLength);
+            SetPostionX(Lanes[MyRandom.Next(0, 3)] * Constants.AspectRatio);
+        }
+
+
         public override void UpdateMovement()
         {
             TranslateByZ(20,2.5f);
             if (DetectCollision(Player) && Constants.PlayingGame)
             {
-                Player.ToggleDeath();
+                if (ObjectType == Type.Enemy)
+                {
+                    Player.ToggleDeath();
+                }
+                else if (ObjectType == Type.Ring)
+                {
+                    //string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+                    //Constants.SoundEffects = new System.Media.SoundPlayer(projectPath + "\\Audio\\Ring.wav");
+                    //Constants.SoundEffects.Play();
+                    Respawn();
+                }
+                
             }
-            if (Position.z > 600)
+            if (OffScreen())
             {
-                SetPostionZ(-1100*Constants.AspectRatio);
-                MoveToX(Lanes[MyRandom.Next(0,3)]* Constants.AspectRatio);
+                Respawn();
             }
             UpdatePositon();
             UpdateAnimationAndMove();

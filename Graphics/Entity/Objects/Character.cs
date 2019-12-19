@@ -39,8 +39,10 @@ namespace GOSonic3D.Entity.Objects
 
         public void ToggleDeath()
         {
+            
             if (!IsDieing)
             {
+                IntialPosition = Position;
                 IsDieing = true;
                 StartAnimation((animType)2);
                 TranslateByY(80, 4.5f);
@@ -117,9 +119,12 @@ namespace GOSonic3D.Entity.Objects
                 IsDieing = false;
                 StartAnimation((animType)0);
                 CurrentVelocity.y = 0;
-                Position = IntialPosition;
+                SetPostionY(IntialPosition.y);
+                UpdateAnimationAndMove();
                 Constants.MainMenu.ShowMenu();
                 Hide();
+                Constants.PlayingGame = false;
+                Constants.MainMenu.SetPositionZ(Position.z + 30*Constants.AspectRatio);
                 Console.WriteLine("Ground");
             }
         }
@@ -142,9 +147,7 @@ namespace GOSonic3D.Entity.Objects
             if ((Acceleration.y > 0 && (ReachedTarget() || CurrentVelocity.y <= 0)))
             {
                 MoveToY(GroundY, 0.5f);
-                //Target.y = GroundY;
                 Console.WriteLine("Top");
-                //Console.WriteLine("Velocity :" + CurrentVelocity.y);
                 Console.WriteLine("acc :" + Acceleration.y);
             }
 
@@ -162,14 +165,13 @@ namespace GOSonic3D.Entity.Objects
             if (IsJumping && !IsDieing)
             {
                 Jump();
-                //Console.WriteLine("Jumping :" + CurrentVelocity.y + "   " + Acceleration.y);
             }
 
             if (IsDieing)
             {
                 Die();
             }
-
+            TranslateByZ(-20, 1.2f);
             UpdatePositon();
             UpdateAnimationAndMove();
         }

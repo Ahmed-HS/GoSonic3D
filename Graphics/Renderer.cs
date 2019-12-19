@@ -18,6 +18,7 @@ namespace GOSonic3D
     {
         public static float AspectRatio;
         public static System.Media.SoundPlayer GameSound;
+        public static System.Media.SoundPlayer SoundEffects;
         public static bool PlayingGame = false;
         public static Menu MainMenu;
     }
@@ -49,29 +50,39 @@ namespace GOSonic3D
         public Character Sonic;
 
         GameMap []Map;
-        Enemy []Enemies;
+        GroundedObject []Enemies;
+        GroundedObject[] Rings;
         public void Initialize()
         {
 
             string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
             sh = new Shader(projectPath + "\\Shaders\\SimpleVertexShader.vertexshader", projectPath + "\\Shaders\\SimpleFragmentShader.fragmentshader");
 
+            cam = new Camera();
+
             Sonic = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
 
-            Enemies = new Enemy[3];
+            Enemies = new GroundedObject[3];
+            Rings = new GroundedObject[20];
             for (int i = 0; i < Enemies.Length; i++)
             {
-                Enemies[i] = new Enemy(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", Sonic);
+                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", Sonic,cam, GroundedObject.Type.Enemy);
+            }
+
+            for (int i = 0; i < Rings.Length; i++)
+            {
+                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", Sonic, cam, GroundedObject.Type.Ring);
             }
 
             Constants.GameSound = new System.Media.SoundPlayer(projectPath + "\\Audio\\2.wav");
             Constants.GameSound.PlayLooping();
 
             Constants.MainMenu = new Menu();
+            
             Map = new GameMap[2];
-            Map[0] = new GameMap(new vec3(45, 588, -350));
+            Map[0] = new GameMap(new vec3(45, 588, -350),cam);
             Map[0].IsMoving = true;
-            Map[1] = new GameMap(new vec3(45, 588, Map[0].Position.z -700));
+            Map[1] = new GameMap(new vec3(45, 588, Map[0].Position.z -700),cam);
             Map[1].IsMoving = false;
 
 
@@ -86,7 +97,7 @@ namespace GOSonic3D
 
             modelID = Gl.glGetUniformLocation(shader.ID, "model");
 
-            cam = new Camera();
+            
             scaleMat = glm.scale(new mat4(1), new vec3(2f, 2f, 2.0f));
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
@@ -247,6 +258,12 @@ namespace GOSonic3D
             {
                 Enemies[i].Draw(modelID);
             }
+
+            for (int i = 0; i < Rings.Length; i++)
+            {
+                Rings[i].Draw(modelID);
+            }
+
             Map[0].Draw(modelID);
             Map[1].Draw(modelID);
 
@@ -286,24 +303,15 @@ namespace GOSonic3D
 
         void MoveMap()
         {
-
-            if (Map[0].FinishedMap(Map[0].StartZ == Map[1].StartZ ? 2: 1))
+            if (Map[0].FinishedMap())
             {
-                Map[0].SetPositionZ(Map[1].StartZ);
-                Map[0].StartZ = Map[1].StartZ;
-                Console.WriteLine("Map0");
+                Map[0].ResesMap();
             }
 
-            if (Map[1].FinishedMap(2))
+            if (Map[1].FinishedMap())
             {
-                Map[1].SetPositionZ(Map[1].StartZ);
-                Map[1].StartZ = Map[0].StartZ;
-                Console.WriteLine("Map1");
+                Map[1].ResesMap();
             }
-
-            Task.Run(() => Map[0].Move());
-            Task.Run(() => Map[1].Move());
-
         }
 
         public void Update(float deltaTime)
@@ -311,14 +319,28 @@ namespace GOSonic3D
             cam.UpdateViewMatrix();
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
-            Sonic.UpdateMovement();
-            for (int i = 0; i < Enemies.Length; i++)
-            {
-                Enemies[i].UpdateMovement();
-            }
-            Task.Run(() => MoveMap());
 
-            Task.Run(() => Constants.MainMenu.UpdateMenu());
+            if (Constants.PlayingGame)
+            {
+                Sonic.UpdateMovement();
+                cam.UpdateMovement();
+                for (int i = 0; i < Enemies.Length; i++)
+                {
+                    Enemies[i].UpdateMovement();
+                }
+
+                for (int i = 0; i < Rings.Length; i++)
+                {
+                    Rings[i].UpdateMovement();
+                }
+
+                Task.Run(() => MoveMap());
+            }
+            else
+            {
+                Task.Run(() => Constants.MainMenu.UpdateMenu());
+            }
+      
         }
 
         public void CleanUp()

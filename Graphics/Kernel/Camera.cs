@@ -1,4 +1,5 @@
 ﻿using GlmNet;
+using GOSonic3D.Entity.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GOSonic3D
 {
-    class Camera
+    class Camera : MoveableObject
     {
         float mAngleX = 0;
         float mAngleY = 0;
@@ -21,6 +22,7 @@ namespace GOSonic3D
         {
             Reset(0, 585, 70, 0, 0, 0, 0, 1, 0);
             SetProjectionMatrix(45, 4 / 3, 0.1f, 1000);
+            Position = mPosition;
         }
 
         public vec3 GetLookDirection()
@@ -97,6 +99,13 @@ namespace GOSonic3D
         public void Fly(float dist)
         {
             mPosition += dist * mUp;
+        }
+
+        public void UpdateMovement()
+        {
+            TranslateByZ(-20, 1.2f);
+            UpdatePositon();
+            mPosition = Position;
         }
     }
 }
