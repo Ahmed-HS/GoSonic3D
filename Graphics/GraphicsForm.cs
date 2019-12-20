@@ -9,14 +9,11 @@ namespace GOSonic3D
 {
     public partial class GOSonic3DForm : Form
     {
-        Renderer renderer = new Renderer();
         Thread MainLoopThread;
 
         float deltaTime;
         public GOSonic3DForm()
         {
-
-
 
             InitializeComponent();
             this.TopMost = true;
@@ -42,56 +39,61 @@ namespace GOSonic3D
             float Width = Screen.PrimaryScreen.Bounds.Width;
             float Height = Screen.PrimaryScreen.Bounds.Height;
             Constants.AspectRatio = Width / Height;
-            renderer.Initialize();   
+            Constants.renderer = new Renderer();
+            Constants.renderer.Initialize();   
         }
         void MainLoop()
         {
             while (true)
             {
-                renderer.Draw();
-                renderer.Update(deltaTime);
+                Constants.renderer.Draw();
+                Constants.renderer.Update(deltaTime);
                 simpleOpenGlControl1.Invoke(new Action(() => simpleOpenGlControl1.Refresh()));
             }
         }
         private void GOSonic3DForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            renderer.CleanUp();
+            Constants.renderer.CleanUp();
             MainLoopThread.Abort();
         }
 
         private void simpleOpenGlControl1_Paint(object sender, PaintEventArgs e)
         {
-            renderer.Draw();
-            renderer.Update(deltaTime);
+            Constants.renderer.Draw();
+            Constants.renderer.Update(deltaTime);
         }
 
         private void simpleOpenGlControl1_KeyPress(object sender, KeyPressEventArgs e)
         {
             float speed = 0.6f;
             if (e.KeyChar == 'a')
-                renderer.cam.Strafe(-speed);
+                Constants.renderer.cam.Strafe(-speed);
             if (e.KeyChar == 'd')
-                renderer.cam.Strafe(speed);
+                Constants.renderer.cam.Strafe(speed);
             if (e.KeyChar == 's')
-                renderer.cam.Walk(-speed);
+                Constants.renderer.cam.Walk(-speed);
             if (e.KeyChar == 'w')
-                renderer.cam.Walk(speed);
+                Constants.renderer.cam.Walk(speed);
             if (e.KeyChar == 'z')
-                renderer.cam.Fly(-speed);
+                Constants.renderer.cam.Fly(-speed);
             if (e.KeyChar == 'c')
-                renderer.cam.Fly(speed);
-            if (e.KeyChar == ' ')
+                Constants.renderer.cam.Fly(speed);
+            if (Constants.PlayingGame)
             {
-                renderer.Sonic.ToggleJump();
+                if (e.KeyChar == ' ')
+                {
+                    Constants.renderer.charcter.ToggleJump();
+                }
+                if (e.KeyChar == 'l')
+                {
+                    Constants.renderer.charcter.ShiftRight();
+                }
+                if (e.KeyChar == 'k')
+                {
+                    Constants.renderer.charcter.ShiftLeft();
+                }
             }
-            if (e.KeyChar == 'l')
-            {
-                renderer.Sonic.ShiftRight();       
-            }
-            if (e.KeyChar == 'k')
-            {
-                renderer.Sonic.ShiftLeft();
-            }
+
             if (e.KeyChar == 'p')
             {
                 Constants.MainMenu.MoveDown();
@@ -104,26 +106,56 @@ namespace GOSonic3D
             {
                 if (Constants.MainMenu.Selected == 0)
                 {
-                    Constants.MainMenu.HideMenu();
-                    renderer.Sonic.Show();
-                    Constants.PlayingGame = true;
+                    if (Constants.SelectScreen)
+                    {
+                        Constants.renderer.SwitchCharacter();
+                        Constants.renderer.charcter.Show();
+                        Constants.PlayingGame = true;
+                        Constants.renderer.characterSelected = true;
+                    }
+                    else
+                    {
+                        Constants.MainMenu.HideMenu();
+                        Constants.SelectScreen = true;
+                    }
                 }
-                else if (Constants.MainMenu.Selected == 1)
+                else
+                if (Constants.MainMenu.Selected == 1)
                 {
                     this.Close();
                 }
             }
-            if (e.KeyChar == 'x')
+
+            if (Constants.SelectScreen)
             {
-                this.Close();
+                if (e.KeyChar == 'm')
+                {
+                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter + 1) % Constants.renderer.numOfCharacters;
+                }
+
+                if (e.KeyChar == 'n')
+                {
+                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter - 1 + Constants.renderer.numOfCharacters) % Constants.renderer.numOfCharacters;
+                }
             }
+
             if (e.KeyChar == '\b')
             {
                 if (Constants.PlayingGame)
                 {
-                    renderer.Sonic.Hide();
+                    Constants.renderer.charcter.Hide();
                     Constants.MainMenu.ShowMenu();
                 }
+                else
+                {
+                    Constants.renderer.charcter.Show();
+                    Constants.MainMenu.HideMenu();
+                }
+            }
+
+            if (e.KeyChar == 'x')
+            {
+                this.Close();
             }
 
         }

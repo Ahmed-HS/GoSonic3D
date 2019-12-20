@@ -1,0 +1,58 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 20.12.2019 03:27:39
+
+newmtl stu_chr_shadow_body
+	Ns 43.219284
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.200000 0.200000 0.200000
+	Kd 0.800000 0.800000 0.800000
+	Ks 0.200000 0.200000 0.200000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_chr_shadow_body_dif.png
+	map_Kd G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_chr_shadow_body_dif.png
+
+newmtl stu_chr_shadow_eye
+	Ns 43.219284
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.200000 0.200000 0.200000
+	Kd 0.800000 0.800000 0.800000
+	Ks 0.200000 0.200000 0.200000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_chr_shadow_eye_dif.png
+	map_Kd G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_chr_shadow_eye_dif.png
+
+newmtl stu_chr_shadow_fur
+	Ns 43.219284
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.200000 0.200000 0.200000
+	Kd 0.800000 0.800000 0.800000
+	Ks 0.200000 0.200000 0.200000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_chr_shadow_fur_dif.png
+	map_Kd G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_chr_shadow_fur_dif.png
+
+newmtl stu_obj_base
+	Ns 43.219284
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.200000 0.200000 0.200000
+	Kd 0.800000 0.800000 0.800000
+	Ks 0.200000 0.200000 0.200000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_enm_base_dif_HD.png
+	map_Kd G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter\PC Computer - Sonic Generations - Shadow the Hedgehog Statue\stu_chr_shadow\textures\stu_enm_base_dif_HD.png

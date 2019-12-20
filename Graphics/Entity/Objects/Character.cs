@@ -124,7 +124,12 @@ namespace GOSonic3D.Entity.Objects
                 Constants.MainMenu.ShowMenu();
                 Hide();
                 Constants.PlayingGame = false;
-                Constants.MainMenu.SetPositionZ(Position.z + 30*Constants.AspectRatio);
+                Constants.MainMenu.SetPositionZ(Position.z + 30 * Constants.AspectRatio);
+
+                Constants.SelectScreen = false;
+                Constants.renderer.characterSelected = false;
+                Constants.renderer.SetCharactersPosition();
+
                 Console.WriteLine("Ground");
             }
         }

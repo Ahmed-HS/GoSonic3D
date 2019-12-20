@@ -303,3 +303,17 @@ D:\College\College_y3\Graphics\Project\Main Branch\GoSonic3D\Graphics\obj\Debug\
 D:\College\College_y3\Graphics\Project\Main Branch\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.CopyComplete
 D:\College\College_y3\Graphics\Project\Main Branch\GoSonic3D\Graphics\obj\Debug\GOSonic3D.exe
 D:\College\College_y3\Graphics\Project\Main Branch\GoSonic3D\Graphics\obj\Debug\GOSonic3D.pdb
+G:\GoSonic3D-master\GoSonic3D\Graphics\bin\Debug\GOSonic3D.exe.config
+G:\GoSonic3D-master\GoSonic3D\Graphics\bin\Debug\GOSonic3D.exe
+G:\GoSonic3D-master\GoSonic3D\Graphics\bin\Debug\GOSonic3D.pdb
+G:\GoSonic3D-master\GoSonic3D\Graphics\bin\Debug\GlmNet.dll
+G:\GoSonic3D-master\GoSonic3D\Graphics\bin\Debug\GlmNet.pdb
+G:\GoSonic3D-master\GoSonic3D\Graphics\bin\Debug\GlmNet.xml
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\Graphics.csprojAssemblyReference.cache
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\GOSonic3D.GOSonic3DForm.resources
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\GOSonic3D.Properties.Resources.resources
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.GenerateResource.cache
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.CoreCompileInputs.cache
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\Graphics.csproj.CopyComplete
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\GOSonic3D.exe
+G:\GoSonic3D-master\GoSonic3D\Graphics\obj\Debug\GOSonic3D.pdb
