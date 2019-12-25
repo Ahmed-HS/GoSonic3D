@@ -316,6 +316,8 @@ namespace GOSonic3D.Entity.Objects
 
         public bool DetectCollision(MoveableObject Target)
         {
+            
+
             return DistanceFrom(Target) < 2.5f;
         }
 

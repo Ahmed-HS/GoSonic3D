@@ -58,6 +58,7 @@ namespace GOSonic3D
         public float Speed = 1;
         public Camera cam;
         public Character charcter;
+        public Character charcter2;
 
         GameMap []Map;
         GroundedObject []Enemies;
@@ -77,18 +78,30 @@ namespace GOSonic3D
             charcters[3] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2");
 
             charcter = charcters[0];
+            charcter2 = charcters[1];
 
             Enemies = new GroundedObject[3];
             Rings = new GroundedObject[20];
-            for (int i = 0; i < Enemies.Length; i++)
+            for (int i = 0; i < Enemies.Length / 2; i++)
             {
                 Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", charcter,cam, GroundedObject.Type.Enemy);
             }
 
-            for (int i = 0; i < Rings.Length; i++)
+            for (int i =  Enemies.Length / 2; i < Enemies.Length; i++)
+            {
+                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", charcter2, cam, GroundedObject.Type.Enemy);
+            }
+
+            for (int i = 0; i < Rings.Length / 2; i++)
             {
                 Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", charcter, cam, GroundedObject.Type.Ring);
             }
+
+            for (int i = Rings.Length / 2; i < Rings.Length; i++)
+            {
+                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", charcter2, cam, GroundedObject.Type.Ring);
+            }
+
 
             Constants.GameSound = new System.Media.SoundPlayer(projectPath + "\\Audio\\2.wav");
             Constants.GameSound.PlayLooping();
@@ -323,7 +336,10 @@ namespace GOSonic3D
             shader.setVec3("lightPos", lightPos);
             shader.setInt("blinn", 1);
 
+            charcter2.Draw(modelID);
+
             charcter.Draw(modelID);
+
             Constants.MainMenu.Draw(modelID);
             for (int i = 0; i < Enemies.Length; i++)
             {
@@ -396,6 +412,7 @@ namespace GOSonic3D
             if (Constants.PlayingGame)
             {
                 charcter.UpdateMovement();
+                charcter2.UpdateMovement();
                 cam.UpdateMovement();
                 for (int i = 0; i < Enemies.Length; i++)
                 {

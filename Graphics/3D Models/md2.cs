@@ -93,6 +93,12 @@ namespace GOSonic3D._3D_Models
         float currframe;
         float[] vs, ns;
 
+
+        public vec3 maxxyz = new vec3(0, 0, 0);
+        public vec3 minxyz = new vec3(0, 0, 0);
+
+        
+
         public void UpdateAnimationAndMove()
         {
             TranslationMatrix = glm.translate(new mat4(1), Position);
@@ -372,6 +378,15 @@ namespace GOSonic3D._3D_Models
             AvNormals = new List<List<vec3>>();
             CvNormals = new List<vec3>();
             CvVertices = new List<vec3>();
+
+
+            vec3 maxx = new vec3(int.MinValue, 0, 0);
+            vec3 maxy = new vec3(0, int.MinValue, 0);
+            vec3 maxz = new vec3(0, 0, int.MinValue);
+            vec3 minz = new vec3(0, 0, int.MaxValue);
+            vec3 minx = new vec3(int.MaxValue, 0, 0);
+            vec3 miny = new vec3(0, int.MaxValue, 0);
+
             for (int j = 0; j < header.num_frames; j++)
             {
                 AvVertices.Add(new List<vec3>());
@@ -414,6 +429,21 @@ namespace GOSonic3D._3D_Models
                         anotherUV.Add(new vec2(s, t));
                         for (int j = 0; j < header.num_frames; j++)
                         {
+                            if (vVertices[j][vi].x < minx.x)
+                                minx = vVertices[j][vi];
+                            if (vVertices[j][vi].y < miny.y)
+                                miny = vVertices[j][vi];
+                            if (vVertices[j][vi].z < minz.z)
+                                minz = vVertices[j][vi];
+
+                            if (vVertices[j][vi].x > maxx.x)
+                                maxx = vVertices[j][vi];
+                            if (vVertices[j][vi].y > maxy.y)
+                                maxy = vVertices[j][vi];
+                            if (vVertices[j][vi].z > maxz.z)
+                                maxz = vVertices[j][vi];
+
+
                             AvVertices[j].Add(vVertices[j][vi]);
                             AvNormals[j].Add(vNormals[j][vi]);
                             CvVertices.Add(new vec3(0, 0, 0));
@@ -423,9 +453,10 @@ namespace GOSonic3D._3D_Models
                 }
             }
 
+            minxyz = new vec3(minx.x, miny.y, minz.z);
+            maxxyz = new vec3(maxx.x, maxy.y, maxz.z);
+
             mVertices = vVertices[0];
-
-
             m = new Model();
             m.indices = indices;
             m.texture = tex;

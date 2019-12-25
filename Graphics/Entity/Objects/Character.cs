@@ -34,7 +34,7 @@ namespace GOSonic3D.Entity.Objects
                 Console.WriteLine("Jump Presed");
                 Console.WriteLine("Velocity :" + CurrentVelocity.y);
                 Console.WriteLine("acc :" + Acceleration.y);
-            }
+            }            
         }
 
         public void ToggleDeath()

@@ -56,17 +56,33 @@ namespace GOSonic3D.Entity.Objects
             SetPostionX(Lanes[MyRandom.Next(0, 3)] * Constants.AspectRatio);
         }
 
+        public double DistanceFrom(vec3 a, vec3 b)
+        {
+            return Math.Sqrt(Math.Pow(a.x - b.x, 2) + Math.Pow(a.y - b.y, 2) + Math.Pow(a.z - b.z, 2));
+        }
+
+        bool collision(Character a)
+        {
+            float az = Math.Abs((Math.Abs(a.maxxyz.z) - Math.Abs(a.minxyz.z))) / 2;
+            float bz = Math.Abs((Math.Abs(maxxyz.z) - Math.Abs(minxyz.z))) / 2;
+
+            float zmiddis = a.Position.z - Position.z;
+
+            return az + bz > zmiddis;
+        }
 
         public override void UpdateMovement()
         {
             TranslateByZ(20,2.5f);
-            if (DetectCollision(Player) && Constants.PlayingGame)
+            if (collision(Player) && Constants.PlayingGame)
+            //if (DetectCollision(Player) && Constants.PlayingGame)
             {
                 if (ObjectType == Type.Enemy)
                 {
                     Player.ToggleDeath();
                 }
-                else if (ObjectType == Type.Ring)
+                else 
+                if (ObjectType == Type.Ring)
                 {
                     //string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
                     //Constants.SoundEffects = new System.Media.SoundPlayer(projectPath + "\\Audio\\Ring.wav");

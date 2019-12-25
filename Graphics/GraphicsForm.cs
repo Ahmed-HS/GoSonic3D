@@ -80,7 +80,7 @@ namespace GOSonic3D
                 Constants.renderer.cam.Fly(speed);
             if (Constants.PlayingGame)
             {
-                if (e.KeyChar == ' ')
+                if (e.KeyChar == 'i')
                 {
                     Constants.renderer.charcter.ToggleJump();
                 }
@@ -88,10 +88,24 @@ namespace GOSonic3D
                 {
                     Constants.renderer.charcter.ShiftRight();
                 }
-                if (e.KeyChar == 'k')
+                if (e.KeyChar == 'j')
                 {
                     Constants.renderer.charcter.ShiftLeft();
                 }
+
+                if (e.KeyChar == 'w')
+                {
+                    Constants.renderer.charcter2.ToggleJump();
+                }
+                if (e.KeyChar == 'd')
+                {
+                    Constants.renderer.charcter2.ShiftRight();
+                }
+                if (e.KeyChar == 'a')
+                {
+                    Constants.renderer.charcter2.ShiftLeft();
+                }
+            
             }
 
             if (e.KeyChar == 'p')
@@ -110,6 +124,7 @@ namespace GOSonic3D
                     {
                         Constants.renderer.SwitchCharacter();
                         Constants.renderer.charcter.Show();
+                        Constants.renderer.charcter2.Show();
                         Constants.PlayingGame = true;
                         Constants.renderer.characterSelected = true;
                     }
