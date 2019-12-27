@@ -1,23 +1,21 @@
-﻿using System;
+﻿using GlmNet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GlmNet;
 
 namespace GOSonic3D.Entity
 {
-    class Menu
+    class GAMEOVER
     {
         public int Selected;
         public Text3D[] Buttons;
         public float ButtonSize;
-        public Menu()
+        public GAMEOVER()
         {
-            Buttons = new Text3D[3];
-            Buttons[0] = new Text3D("SinglePlayer",new vec3(-30,1100,0));
-            Buttons[1] = new Text3D("MultiPlayer", new vec3(-27, 1090, 0));
-            Buttons[2] = new Text3D("Exit", new vec3(-10, 1080, 0));
+            Buttons = new Text3D[1];
+            Buttons[0] = new Text3D("GAMEOVER", new vec3(-20, 1060, 0));
             Selected = 0;
             ButtonSize = Buttons[0].Scale;
         }

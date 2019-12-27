@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,7 +17,7 @@ namespace GOSonic3D.Entity.Objects
         {
             Enemy,Ring
         }
-
+        Kernel.Sound s;
         Character[] Player;
         Random MyRandom;
         float[] Lanes;
@@ -91,14 +92,15 @@ namespace GOSonic3D.Entity.Objects
                 {
                     if (ObjectType == Type.Enemy)
                     {
-                        Player[i].ToggleDeath();
+                        Player[i].ToggleDeath(); 
                     }
                     else 
                     if (ObjectType == Type.Ring)
                     {
-                        //string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-                        //Constants.SoundEffects = new System.Media.SoundPlayer(projectPath + "\\Audio\\Ring.wav");
-                        //Constants.SoundEffects.Play();
+                        string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+
+                        Constants.s.Play(false);
+
                         Respawn();
                     }
                 

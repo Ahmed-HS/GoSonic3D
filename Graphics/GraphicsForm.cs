@@ -7,6 +7,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using GOSonic3D.Entity.Objects;
 
 namespace GOSonic3D
 {
@@ -18,6 +19,7 @@ namespace GOSonic3D
         Socket serverSocket;
         string serverMessage = "";
         string clientMessage = "";
+        
 
         public GOSonic3DForm()
         {
@@ -99,6 +101,9 @@ namespace GOSonic3D
 
         private void simpleOpenGlControl1_KeyPress(object sender, KeyPressEventArgs e)
         {
+
+            string projectPath = System.IO.Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+
             float speed = 0.6f;
             if (e.KeyChar == 'a')
                 Constants.renderer.cam.Strafe(-speed);
@@ -155,15 +160,119 @@ namespace GOSonic3D
 
             if (e.KeyChar == 'p')
             {
-                Constants.MainMenu.MoveDown();
+                if (Constants.currentMen == MenuType.main)
+                    Constants.MainMenu.MoveDown();
+                else if (Constants.currentMen == MenuType.choosep1)
+                {
+                    Constants.choosep1.MoveDown();
+                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter + 1) % Constants.renderer.numOfCharacters;
+                    Constants.renderer.charcter = Constants.renderer.charcters[Constants.renderer.selectedCharacter];
+                }
+                else if (Constants.currentMen == MenuType.choosep2)
+                {
+                    Constants.choosep2.MoveDown();
+                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter + 1) % Constants.renderer.numOfCharacters;
+                    Constants.renderer.charcter2 = Constants.renderer.charcters[Constants.renderer.selectedCharacter];
+                }
             }
             if (e.KeyChar == 'o')
             {
-                Constants.MainMenu.MoveUp();
+                if (Constants.currentMen == MenuType.main)
+                    Constants.MainMenu.MoveUp();
+                else if (Constants.currentMen == MenuType.choosep1)
+                {
+                    Constants.choosep1.MoveUp();
+                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter - 1 + Constants.renderer.numOfCharacters) % Constants.renderer.numOfCharacters;
+                    Constants.renderer.charcter = Constants.renderer.charcters[Constants.renderer.selectedCharacter];
+                }
+                else if (Constants.currentMen == MenuType.choosep2)
+                {
+                    Constants.choosep2.MoveUp();
+                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter - 1 + Constants.renderer.numOfCharacters) % Constants.renderer.numOfCharacters;
+                    Constants.renderer.charcter2 = Constants.renderer.charcters[Constants.renderer.selectedCharacter];
+                }
             }
             if (e.KeyChar == '\r')
             {
-                if (Constants.MainMenu.Selected == 0)
+                if (Constants.currentMen == MenuType.main)
+                {
+                    if (Constants.MainMenu.Selected == 0)
+                    {
+                        Constants.playType = PlayType.single;
+                        Constants.MainMenu.HideMenu();
+
+                        Constants.currentMen = MenuType.choosep1;
+                        Constants.choosep1.Selected = 0;
+                        Constants.choosep1.ShowMenu();
+                    }
+                    else if (Constants.MainMenu.Selected == 1)
+                    {
+                        Constants.playType = PlayType.multi;
+
+                        Constants.MainMenu.HideMenu();
+
+                        Constants.currentMen = MenuType.choosep1;
+                        Constants.choosep1.Selected = 0;
+                        Constants.choosep1.ShowMenu();
+                    }
+                    else if (Constants.MainMenu.Selected == 2)
+                    {
+                        this.Close();
+                        serverSocket.Close();
+                    }
+                }
+                else if (Constants.currentMen == MenuType.choosep1)
+                {
+                    if (Constants.playType == PlayType.single)
+                    {
+                        Constants.renderer.charcter.Show();
+                        Constants.currentMen = MenuType.play;
+                        Constants.choosep1.HideMenu();
+                        Constants.PlayingGame = true;
+                        Constants.isGameOver = false;
+                        Constants.gameover.HideMenu();
+
+                        for (int i = 0; i < Constants.renderer.Enemies.Length; i++)
+                        {
+                            Constants.renderer.Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", new Character[] { Constants.renderer.charcter, Constants.renderer.charcter2 }, Constants.renderer.cam, GroundedObject.Type.Enemy);
+                        }
+
+                        for (int i = 0; i < Constants.renderer.Rings.Length; i++)
+                        {
+                            Constants.renderer.Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", new Character[] { Constants.renderer.charcter, Constants.renderer.charcter2 }, Constants.renderer.cam, GroundedObject.Type.Ring);
+                        }
+                    }
+                    else if (Constants.playType == PlayType.multi)
+                    {
+                        Constants.renderer.charcter.Show();
+                        Constants.currentMen = MenuType.choosep2;
+                        Constants.choosep1.HideMenu();
+                        Constants.choosep2.ShowMenu();
+                    }
+                }
+                else if (Constants.currentMen == MenuType.choosep2)
+                {
+                    Constants.renderer.charcter2.SetPostionZ(Constants.renderer.charcter.Position.z);
+                    Constants.renderer.charcter2.UpdatePositon();
+                    Constants.renderer.charcter2.UpdateMovement();
+                    Constants.currentMen = MenuType.play;
+                    Constants.renderer.charcter2.Show();
+                    Constants.choosep2.HideMenu();
+                    Constants.PlayingGame = true;
+                    Constants.isGameOver = false;
+                    Constants.gameover.HideMenu();
+
+                    for (int i = 0; i < Constants.renderer.Enemies.Length; i++)
+                    {
+                        Constants.renderer.Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", new Character[] { Constants.renderer.charcter, Constants.renderer.charcter2 }, Constants.renderer.cam, GroundedObject.Type.Enemy);
+                    }
+
+                    for (int i = 0; i < Constants.renderer.Rings.Length; i++)
+                    {
+                        Constants.renderer.Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", new Character[] { Constants.renderer.charcter, Constants.renderer.charcter2 }, Constants.renderer.cam, GroundedObject.Type.Ring);
+                    }
+                }
+                /*if (Constants.MainMenu.Selected == 0)
                 {
                     if (Constants.SelectScreen)
                     {
@@ -173,12 +282,14 @@ namespace GOSonic3D
                         if(Constants.renderer.characterSelected == 1)
                         {
                             Constants.renderer.charcter.Show();
+                            Constants.PlayingGame = true;
+                            Console.WriteLine("da5al");
                         }
 
                         if(Constants.renderer.characterSelected == 2)
                         {
                             Constants.renderer.charcter2.Show();
-                            Constants.PlayingGame = true;
+                            Console.WriteLine("da5al2");
                         }
                     }
                     else
@@ -188,37 +299,36 @@ namespace GOSonic3D
                     }
                 }
                 else
-                if (Constants.MainMenu.Selected == 1)
+                if (Constants.MainMenu.Selected == 2)
                 {
                     this.Close();
                     serverSocket.Close();
-                }
-            }
-
-            if (Constants.SelectScreen)
-            {
-                if (e.KeyChar == 'm')
-                {
-                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter + 1) % Constants.renderer.numOfCharacters;
-                }
-
-                if (e.KeyChar == 'n')
-                {
-                    Constants.renderer.selectedCharacter = (Constants.renderer.selectedCharacter - 1 + Constants.renderer.numOfCharacters) % Constants.renderer.numOfCharacters;
-                }
+                }*/
             }
 
             if (e.KeyChar == '\b')
             {
                 if (Constants.PlayingGame)
                 {
+                    Constants.currentMen = MenuType.main;
                     Constants.renderer.charcter.Hide();
                     Constants.MainMenu.ShowMenu();
+                    Constants.PlayingGame = false;
+
+                    Constants.MainMenu.SetPositionZ(Constants.renderer.charcter.Position.z + 10 * Constants.AspectRatio);
+                    Constants.choosep1.SetPositionZ(Constants.renderer.charcter.Position.z + 10 * Constants.AspectRatio);
+                    Constants.choosep2.SetPositionZ(Constants.renderer.charcter.Position.z + 10 * Constants.AspectRatio);
+                    Constants.gameover.SetPositionZ(Constants.renderer.charcter.Position.z + 10 * Constants.AspectRatio);
+
                 }
                 else
                 {
+                    Constants.currentMen = MenuType.play;
                     Constants.renderer.charcter.Show();
+                    if (Constants.playType == PlayType.multi)
+                        Constants.renderer.charcter2.Show();
                     Constants.MainMenu.HideMenu();
+                    Constants.PlayingGame = true;
                 }
             }
 
@@ -227,6 +337,11 @@ namespace GOSonic3D
                 this.Close();
                 serverSocket.Close();
             }
+        }
+
+        private void GOSonic3DForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

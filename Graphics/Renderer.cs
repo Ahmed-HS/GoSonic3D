@@ -11,18 +11,38 @@ using System.IO;
 using GOSonic3D._3D_Models;
 using GOSonic3D.Entity.Objects;
 using GOSonic3D.Entity;
+using System.Media;
 
 namespace GOSonic3D
 {
+    enum MenuType
+    {
+        main = 1,
+        choosep1 = 2,
+        choosep2 = 3,
+        play = 4
+    }
+    enum PlayType
+    {
+        single = 1,
+        multi = 2,
+        no = 3
+    }
     static class Constants
     {
         public static float AspectRatio;
         public static System.Media.SoundPlayer GameSound;
-        public static System.Media.SoundPlayer SoundEffects;
         public static bool SelectScreen = false;
         public static bool PlayingGame = false;
         public static Menu MainMenu;
+        public static ChoosePlayerMenu choosep1, choosep2;
+        public static GAMEOVER gameover;
         public static Renderer renderer;
+        public static PlayType playType = PlayType.no;
+        public static MenuType currentMen = MenuType.main;
+        public static bool isGameOver = false;
+        public static Kernel.Sound s;
+        public static SoundPlayer SoundEffects { get; internal set; }
     }
 
     class Renderer
@@ -61,8 +81,8 @@ namespace GOSonic3D
         public Character charcter2;
 
         GameMap []Map;
-        GroundedObject []Enemies;
-        GroundedObject[] Rings;
+        public GroundedObject []Enemies;
+        public GroundedObject[] Rings;
         public void Initialize()
         {
             string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
@@ -70,6 +90,8 @@ namespace GOSonic3D
             sh = new Shader(projectPath + "\\Shaders\\SimpleVertexShader.vertexshader", projectPath + "\\Shaders\\SimpleFragmentShader.fragmentshader");
 
             cam = new Camera();
+
+            Constants.s = new Kernel.Sound(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\Audio\\Ring.wav"); ;
 
             charcters = new Character[numOfCharacters * 2];
             charcters[0] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
@@ -97,10 +119,13 @@ namespace GOSonic3D
                 Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", new Character[]{ charcter, charcter2 } , cam, GroundedObject.Type.Ring);
             }
 
-            Constants.GameSound = new System.Media.SoundPlayer(projectPath + "\\Audio\\2.wav");
-            Constants.GameSound.PlayLooping();
+            Kernel.Sound s = new Kernel.Sound(projectPath + "\\Audio\\2.wav");
+            s.Play(true);
 
             Constants.MainMenu = new Menu();
+            Constants.choosep1 = new ChoosePlayerMenu();
+            Constants.choosep2 = new ChoosePlayerMenu();
+            Constants.gameover = new GAMEOVER();
             
             Map = new GameMap[2];
             Map[0] = new GameMap(new vec3(45, 588, -350),cam);
@@ -285,13 +310,13 @@ namespace GOSonic3D
 
         public void SwitchCharacter()
         {
-            if(characterSelected == 1)
+            if(characterSelected == 0)
             {
                 charcters[selectedCharacter].Position = charcter.Position; 
                 charcter = charcters[selectedCharacter];
             }
 
-            if (characterSelected == 2)
+            if (characterSelected == 1)
             {
                 charcters[selectedCharacter + numOfCharacters].Position = charcter2.Position;
                 charcter2 = charcters[selectedCharacter + numOfCharacters];
@@ -343,9 +368,46 @@ namespace GOSonic3D
 
 
             charcter.Draw(modelID);
-            charcter2.Draw(modelID);
+            //if (Constants.playType == PlayType.multi)
+                charcter2.Draw(modelID);
 
             Constants.MainMenu.Draw(modelID);
+            Constants.choosep1.Draw(modelID);
+            Constants.choosep2.Draw(modelID);
+            Constants.gameover.Draw(modelID);
+            
+
+            if (Constants.currentMen == MenuType.main)
+            {
+                Constants.MainMenu.ShowMenu();
+                Constants.choosep1.HideMenu();
+                Constants.choosep2.HideMenu();
+                if (Constants.isGameOver)
+                    Constants.gameover.ShowMenu();
+                else
+                    Constants.gameover.HideMenu();
+            }
+            else if (Constants.currentMen == MenuType.choosep1)
+            {
+                Constants.MainMenu.HideMenu();
+                Constants.choosep1.ShowMenu();
+                Constants.choosep2.HideMenu();
+                if (Constants.isGameOver)
+                    Constants.gameover.ShowMenu();
+                else
+                    Constants.gameover.HideMenu();
+            }
+            else if (Constants.currentMen == MenuType.choosep2)
+            {
+                Constants.MainMenu.HideMenu();
+                Constants.choosep1.HideMenu();
+                Constants.choosep2.ShowMenu();
+                if (Constants.isGameOver)
+                    Constants.gameover.ShowMenu();
+                else
+                    Constants.gameover.HideMenu();
+            }
+
             for (int i = 0; i < Enemies.Length; i++)
             {
                 Enemies[i].Draw(modelID);
@@ -417,7 +479,8 @@ namespace GOSonic3D
             if (Constants.PlayingGame)
             {
                 charcter.UpdateMovement();
-                charcter2.UpdateMovement();
+                if (Constants.playType == PlayType.multi)
+                    charcter2.UpdateMovement();
                 cam.UpdateMovement();
                 for (int i = 0; i < Enemies.Length; i++)
                 {
@@ -435,7 +498,12 @@ namespace GOSonic3D
             else
             {
                 //Constants.MainMenu.UpdateMenu();
-                Task.Run(() => Constants.MainMenu.UpdateMenu());
+                if (Constants.currentMen == MenuType.main)
+                    Task.Run(() => Constants.MainMenu.UpdateMenu());
+                else if (Constants.currentMen == MenuType.choosep1)
+                    Task.Run(() => Constants.choosep1.UpdateMenu());
+                else if (Constants.currentMen == MenuType.choosep2)
+                    Task.Run(() => Constants.choosep2.UpdateMenu());
             }      
         }
 

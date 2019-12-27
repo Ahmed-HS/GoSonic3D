@@ -123,12 +123,24 @@ namespace GOSonic3D.Entity.Objects
                 UpdateAnimationAndMove();
                 Hide();
 
+                Constants.currentMen = MenuType.main;
+                Constants.playType = PlayType.no;
+
                 Constants.MainMenu.ShowMenu();
                 Constants.PlayingGame = false;
-                Constants.MainMenu.SetPositionZ(Position.z + 30 * Constants.AspectRatio);
+                Constants.isGameOver = true;
+                Constants.MainMenu.SetPositionZ(Position.z + 10 * Constants.AspectRatio);
+                Constants.choosep1.SetPositionZ(Position.z + 10 * Constants.AspectRatio);
+                Constants.choosep2.SetPositionZ(Position.z + 10 * Constants.AspectRatio);
+                Constants.gameover.SetPositionZ(Position.z + 10 * Constants.AspectRatio);
+                for (int i = 0; i < Constants.renderer.numOfCharacters; i++)
+                    Constants.renderer.charcters[i].SetPostionZ(Position.z);
 
                 Constants.SelectScreen = false;
                 Constants.renderer.characterSelected = 0;
+                Constants.renderer.selectedCharacter = 0;
+                Constants.renderer.charcter = Constants.renderer.charcters[Constants.renderer.selectedCharacter];
+                Constants.renderer.charcter2 = Constants.renderer.charcters[Constants.renderer.selectedCharacter];
                 Constants.renderer.SetCharactersPosition();
             }
         }

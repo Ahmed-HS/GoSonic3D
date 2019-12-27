@@ -7,17 +7,18 @@ using GlmNet;
 
 namespace GOSonic3D.Entity
 {
-    class Menu
+    class ChoosePlayerMenu
     {
         public int Selected;
         public Text3D[] Buttons;
         public float ButtonSize;
-        public Menu()
+        public ChoosePlayerMenu()
         {
-            Buttons = new Text3D[3];
-            Buttons[0] = new Text3D("SinglePlayer",new vec3(-30,1100,0));
-            Buttons[1] = new Text3D("MultiPlayer", new vec3(-27, 1090, 0));
-            Buttons[2] = new Text3D("Exit", new vec3(-10, 1080, 0));
+            Buttons = new Text3D[4];
+            Buttons[0] = new Text3D("Sonic", new vec3(-17, 1100, 0));
+            Buttons[1] = new Text3D("Tails", new vec3(-17, 1090, 0));
+            Buttons[2] = new Text3D("Knuckles", new vec3(-17, 1080, 0));
+            Buttons[3] = new Text3D("Shadow", new vec3(-17, 1070, 0));
             Selected = 0;
             ButtonSize = Buttons[0].Scale;
         }
