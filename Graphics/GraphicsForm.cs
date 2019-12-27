@@ -124,38 +124,38 @@ namespace GOSonic3D
                 if (e.KeyChar == 'i')
                 {
                     serverMessage = "j";
-                    Constants.renderer.charcter.ToggleJump();
+                    Constants.renderer.player[0].ToggleJump();
                 }
                 else
                 if (e.KeyChar == 'l')
                 {
                     serverMessage = "r";
-                    Constants.renderer.charcter.ShiftRight();
+                    Constants.renderer.player[0].ShiftRight();
                 }
                 else
                 if (e.KeyChar == 'j')
                 {
                     serverMessage = "l";
-                    Constants.renderer.charcter.ShiftLeft();
+                    Constants.renderer.player[0].ShiftLeft();
                 }
                 else
                     serverMessage = "";
 
-                if (e.KeyChar == 'w')
-                //if (clientMessage == "j")
-                {
-                    Constants.renderer.charcter2.ToggleJump();
-                }
-                if (e.KeyChar == 'd')
-                //if (clientMessage == "r")
-                {
-                    Constants.renderer.charcter2.ShiftRight();
-                }
-                if (e.KeyChar == 'a')
-                //if (clientMessage == "l")
-                {
-                    Constants.renderer.charcter2.ShiftLeft();
-                }
+                //if (e.KeyChar == 'w')
+                ////if (clientMessage == "j")
+                //{
+                //    Constants.renderer.charcter2.ToggleJump();
+                //}
+                //if (e.KeyChar == 'd')
+                ////if (clientMessage == "r")
+                //{
+                //    Constants.renderer.charcter2.ShiftRight();
+                //}
+                //if (e.KeyChar == 'a')
+                ////if (clientMessage == "l")
+                //{
+                //    Constants.renderer.charcter2.ShiftLeft();
+                //}
             }
 
             if (e.KeyChar == 'p')
@@ -291,6 +291,13 @@ namespace GOSonic3D
                             Constants.renderer.charcter2.Show();
                             Console.WriteLine("da5al2");
                         }
+
+                        if (Constants.renderer.player.Length > 1)
+                            if (Constants.renderer.characterSelected == 2)
+                            {
+                                Constants.renderer.player[1].Show();
+                                Constants.PlayingGame = true;
+                            }
                     }
                     else
                     {
