@@ -71,37 +71,31 @@ namespace GOSonic3D
 
             cam = new Camera();
 
-            charcters = new Character[numOfCharacters];
+            charcters = new Character[numOfCharacters * 2];
             charcters[0] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
             charcters[1] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Tails.md2");
             charcters[2] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Knuckles.md2");
             charcters[3] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2");
 
+            charcters[0 + numOfCharacters] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
+            charcters[1 + numOfCharacters] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Tails.md2");
+            charcters[2 + numOfCharacters] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Knuckles.md2");
+            charcters[3 + numOfCharacters] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2");
+
             charcter = charcters[0];
-            charcter2 = charcters[1];
+            charcter2 = charcters[0 + numOfCharacters];
 
             Enemies = new GroundedObject[6];
             Rings = new GroundedObject[20];
-            for (int i = 0; i < Enemies.Length / 2; i++)
+            for (int i = 0; i < Enemies.Length; i++)
             {
-                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", charcter,cam, GroundedObject.Type.Enemy);
+                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", new Character[] { charcter, charcter2 }, cam, GroundedObject.Type.Enemy);
             }
 
-            for (int i = Enemies.Length / 2; i < Enemies.Length; i++)
+            for (int i = 0; i < Rings.Length; i++)
             {
-                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow1.md2", charcter2, cam, GroundedObject.Type.Enemy);
+                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", new Character[]{ charcter, charcter2 } , cam, GroundedObject.Type.Ring);
             }
-
-            for (int i = 0; i < Rings.Length / 2; i++)
-            {
-                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", charcter, cam, GroundedObject.Type.Ring);
-            }
-
-            for (int i = Rings.Length / 2; i < Rings.Length; i++)
-            {
-                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring1.md2", charcter2, cam, GroundedObject.Type.Ring);
-            }
-
 
             Constants.GameSound = new System.Media.SoundPlayer(projectPath + "\\Audio\\2.wav");
             Constants.GameSound.PlayLooping();
@@ -295,30 +289,12 @@ namespace GOSonic3D
             {
                 charcters[selectedCharacter].Position = charcter.Position; 
                 charcter = charcters[selectedCharacter];
-                for (int i = 0; i < Enemies.Length / 2; i++)
-                {
-                    Enemies[i].setPlayer(charcter);
-                }
-
-                for (int i = Rings.Length / 2; i < Rings.Length; i++)
-                {
-                    Rings[i].setPlayer(charcter2);
-                }
             }
 
             if (characterSelected == 2)
             {
-                charcters[selectedCharacter].Position = charcter2.Position;
-                charcter2 = charcters[selectedCharacter];
-                for (int i = Enemies.Length / 2; i < Enemies.Length; i++)
-                {
-                    Enemies[i].setPlayer(charcter2);
-                }
-
-                for (int i = 0; i < Rings.Length / 2; i++)
-                {
-                    Rings[i].setPlayer(charcter);
-                }
+                charcters[selectedCharacter + numOfCharacters].Position = charcter2.Position;
+                charcter2 = charcters[selectedCharacter + numOfCharacters];
             }
         }
 
@@ -453,13 +429,13 @@ namespace GOSonic3D
                     Rings[i].UpdateMovement();
                 }
 
-                MoveMap();
-                //Task.Run(() => MoveMap());
+                //MoveMap();
+                Task.Run(() => MoveMap());
             }
             else
             {
-                Constants.MainMenu.UpdateMenu();
-                //Task.Run(() => Constants.MainMenu.UpdateMenu());
+                //Constants.MainMenu.UpdateMenu();
+                Task.Run(() => Constants.MainMenu.UpdateMenu());
             }      
         }
 

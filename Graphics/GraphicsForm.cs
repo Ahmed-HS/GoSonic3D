@@ -22,12 +22,12 @@ namespace GOSonic3D
         public GOSonic3DForm()
         {
             InitializeComponent();
-            //this.TopMost = true;
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.WindowState = FormWindowState.Maximized;
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
 
-            //this.Bounds = Screen.PrimaryScreen.Bounds;
-            //this.simpleOpenGlControl1.Bounds = Screen.PrimaryScreen.Bounds;
+            this.Bounds = Screen.PrimaryScreen.Bounds;
+            this.simpleOpenGlControl1.Bounds = Screen.PrimaryScreen.Bounds;
             simpleOpenGlControl1.InitializeContexts();
 
             initialize();

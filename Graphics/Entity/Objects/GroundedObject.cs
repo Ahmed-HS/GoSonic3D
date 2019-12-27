@@ -17,13 +17,13 @@ namespace GOSonic3D.Entity.Objects
             Enemy,Ring
         }
 
-        Character Player;
+        Character[] Player;
         Random MyRandom;
         float[] Lanes;
         float Scale;
         MoveableObject Camera;
         Type ObjectType;
-        public GroundedObject(string FilePath,Character Player, MoveableObject Camera,Type ObjectType) : base(FilePath)
+        public GroundedObject(string FilePath,Character[] Player, MoveableObject Camera,Type ObjectType) : base(FilePath)
         {
             this.ObjectType = ObjectType;
             this.Camera = Camera;
@@ -42,11 +42,6 @@ namespace GOSonic3D.Entity.Objects
             scaleMatrix = glm.scale(new mat4(1), new vec3(Scale, Scale, Scale));
             Position = new vec3(Lanes[MyRandom.Next(0,3)], 550, MyRandom.Next(-1100,-800)) * Constants.AspectRatio;
             Target = Position;
-        }
-
-        public void setPlayer(Character Player)
-        {
-            this.Player = Player;
         }
 
         public bool OffScreen()
@@ -83,31 +78,33 @@ namespace GOSonic3D.Entity.Objects
 
             double dis = DistanceFrom(a.Position, Position);
             
-
-            return  dis < az
-            ;
+            return  dis < az;
         }
 
         public override void UpdateMovement()
         {
             TranslateByZ(20,2.5f);
-            if (collision(Player) && Constants.PlayingGame)
-            //if (DetectCollision(Player) && Constants.PlayingGame)
+            for(int i = 0; i < Player.Length; i++)
             {
-                if (ObjectType == Type.Enemy)
+                //if (DetectCollision(Player) && Constants.PlayingGame)
+                if (collision(Player[i]) && Constants.PlayingGame)
                 {
-                    Player.ToggleDeath();
-                }
-                else 
-                if (ObjectType == Type.Ring)
-                {
-                    //string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-                    //Constants.SoundEffects = new System.Media.SoundPlayer(projectPath + "\\Audio\\Ring.wav");
-                    //Constants.SoundEffects.Play();
-                    Respawn();
-                }
+                    if (ObjectType == Type.Enemy)
+                    {
+                        Player[i].ToggleDeath();
+                    }
+                    else 
+                    if (ObjectType == Type.Ring)
+                    {
+                        //string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+                        //Constants.SoundEffects = new System.Media.SoundPlayer(projectPath + "\\Audio\\Ring.wav");
+                        //Constants.SoundEffects.Play();
+                        Respawn();
+                    }
                 
+                }
             }
+
             if (OffScreen())
             {
                 Respawn();
