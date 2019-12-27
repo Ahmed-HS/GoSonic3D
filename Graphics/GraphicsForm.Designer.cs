@@ -47,7 +47,6 @@
             this.simpleOpenGlControl1.Size = new System.Drawing.Size(800, 600);
             this.simpleOpenGlControl1.StencilBits = ((byte)(0));
             this.simpleOpenGlControl1.TabIndex = 0;
-            this.simpleOpenGlControl1.Load += new System.EventHandler(this.SimpleOpenGlControl1_Load);
             this.simpleOpenGlControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.simpleOpenGlControl1_Paint);
             this.simpleOpenGlControl1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.simpleOpenGlControl1_KeyPress);
             // 
@@ -62,7 +61,6 @@
             this.Text = "GOSonic3D";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GOSonic3DForm_FormClosing);
-            this.Load += new System.EventHandler(this.GOSonic3DForm_Load);
             this.ResumeLayout(false);
 
         }

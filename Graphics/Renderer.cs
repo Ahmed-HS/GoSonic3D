@@ -40,9 +40,9 @@ namespace GOSonic3D
         float rotate = 0;
         public int selectedCharacter = 0;
         public int numOfCharacters = 4;
-        public bool characterSelected = false;
+        public int characterSelected = 0;
         public Character[] charcters;
-
+        vec3 StartSelectPosition;
 
         public static float x = 0;
         Shader sh;
@@ -65,8 +65,8 @@ namespace GOSonic3D
         GroundedObject[] Rings;
         public void Initialize()
         {
-
             string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+
             sh = new Shader(projectPath + "\\Shaders\\SimpleVertexShader.vertexshader", projectPath + "\\Shaders\\SimpleFragmentShader.fragmentshader");
 
             cam = new Camera();
@@ -80,16 +80,16 @@ namespace GOSonic3D
             charcter = charcters[0];
             charcter2 = charcters[1];
 
-            Enemies = new GroundedObject[3];
+            Enemies = new GroundedObject[6];
             Rings = new GroundedObject[20];
             for (int i = 0; i < Enemies.Length / 2; i++)
             {
                 Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", charcter,cam, GroundedObject.Type.Enemy);
             }
 
-            for (int i =  Enemies.Length / 2; i < Enemies.Length; i++)
+            for (int i = Enemies.Length / 2; i < Enemies.Length; i++)
             {
-                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", charcter2, cam, GroundedObject.Type.Enemy);
+                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow1.md2", charcter2, cam, GroundedObject.Type.Enemy);
             }
 
             for (int i = 0; i < Rings.Length / 2; i++)
@@ -99,7 +99,7 @@ namespace GOSonic3D
 
             for (int i = Rings.Length / 2; i < Rings.Length; i++)
             {
-                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", charcter2, cam, GroundedObject.Type.Ring);
+                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring1.md2", charcter2, cam, GroundedObject.Type.Ring);
             }
 
 
@@ -124,16 +124,16 @@ namespace GOSonic3D
                 Chracters[i] = new Model3D();
             }
 
-            Chracters[0].LoadFile(@"G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter", "Sonic1.obj", 4);
-            Chracters[1].LoadFile(@"G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter", "Tails1.obj", 4);
-            Chracters[2].LoadFile(@"G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter", "Knuckles1.obj", 4);
-            Chracters[3].LoadFile(@"G:\GoSonic3D\Graphics\ModelFiles\static\SelectCharacter", "Shadow1.obj", 4);
+            Chracters[0].LoadFile(projectPath + "\\ModelFiles\\static\\SelectCharacter", "Sonic1.obj", 4);
+            Chracters[1].LoadFile(projectPath + "\\ModelFiles\\static\\SelectCharacter", "Tails1.obj", 4);
+            Chracters[2].LoadFile(projectPath + "\\ModelFiles\\static\\SelectCharacter", "Knuckles1.obj", 4);
+            Chracters[3].LoadFile(projectPath + "\\ModelFiles\\static\\SelectCharacter", "Shadow1.obj", 4);
 
-            vec3 Position = new vec3(0, 0, 5);
-            Position = charcter.Position;
+            StartSelectPosition = new vec3(0, 0, 5);
+            StartSelectPosition = charcter.Position;
             for (int i = 0; i < 4; i++)
             {
-                Chracters[i].transmatrix = glm.translate(new mat4(1), Position);
+                Chracters[i].transmatrix = glm.translate(new mat4(1), StartSelectPosition);
                 Chracters[i].rotmatrix = glm.rotate((0f / 180f) * (float)Math.PI, new vec3(0, 1, 0));
                 Chracters[i].scalematrix = glm.scale(new mat4(1), new vec3(1, 1, 1));
             }
@@ -277,11 +277,13 @@ namespace GOSonic3D
 
         public void SetCharactersPosition()
         {
-            vec3 Position = new vec3(0, 0, 5);
-            Position = charcter.Position;
+            StartSelectPosition.z = charcter.Position.z;
+            charcter.Position = StartSelectPosition;
+            charcter2.Position = StartSelectPosition;
+
             for (int i = 0; i < 4; i++)
             {
-                Chracters[i].transmatrix = glm.translate(new mat4(1), Position);
+                Chracters[i].transmatrix = glm.translate(new mat4(1), StartSelectPosition);
                 Chracters[i].rotmatrix = glm.rotate((0f / 180f) * (float)Math.PI, new vec3(0, 1, 0));
                 Chracters[i].scalematrix = glm.scale(new mat4(1), new vec3(1, 1, 1));
             }
@@ -289,8 +291,35 @@ namespace GOSonic3D
 
         public void SwitchCharacter()
         {
-            charcters[selectedCharacter].Position = charcter.Position; 
-            charcter = charcters[selectedCharacter];
+            if(characterSelected == 1)
+            {
+                charcters[selectedCharacter].Position = charcter.Position; 
+                charcter = charcters[selectedCharacter];
+                for (int i = 0; i < Enemies.Length / 2; i++)
+                {
+                    Enemies[i].setPlayer(charcter);
+                }
+
+                for (int i = Rings.Length / 2; i < Rings.Length; i++)
+                {
+                    Rings[i].setPlayer(charcter2);
+                }
+            }
+
+            if (characterSelected == 2)
+            {
+                charcters[selectedCharacter].Position = charcter2.Position;
+                charcter2 = charcters[selectedCharacter];
+                for (int i = Enemies.Length / 2; i < Enemies.Length; i++)
+                {
+                    Enemies[i].setPlayer(charcter2);
+                }
+
+                for (int i = 0; i < Rings.Length / 2; i++)
+                {
+                    Rings[i].setPlayer(charcter);
+                }
+            }
         }
 
         public void Draw()
@@ -298,7 +327,7 @@ namespace GOSonic3D
             Gl.glClearColor(0, 0, 0.4f, 1);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
-            if (Constants.SelectScreen && !characterSelected)
+            if (Constants.SelectScreen && characterSelected < 2)
             {
                 selectCharacter.UseShader();
                 Gl.glUniformMatrix4fv(modelID, 1, Gl.GL_FALSE, scaleMat.to_array());
@@ -336,9 +365,9 @@ namespace GOSonic3D
             shader.setVec3("lightPos", lightPos);
             shader.setInt("blinn", 1);
 
-            charcter2.Draw(modelID);
 
             charcter.Draw(modelID);
+            charcter2.Draw(modelID);
 
             Constants.MainMenu.Draw(modelID);
             for (int i = 0; i < Enemies.Length; i++)
@@ -424,13 +453,14 @@ namespace GOSonic3D
                     Rings[i].UpdateMovement();
                 }
 
-                Task.Run(() => MoveMap());
+                MoveMap();
+                //Task.Run(() => MoveMap());
             }
             else
             {
-                Task.Run(() => Constants.MainMenu.UpdateMenu());
-            }
-      
+                Constants.MainMenu.UpdateMenu();
+                //Task.Run(() => Constants.MainMenu.UpdateMenu());
+            }      
         }
 
         public void CleanUp()

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GOSonic3D.Entity.Objects
 {
@@ -43,6 +44,11 @@ namespace GOSonic3D.Entity.Objects
             Target = Position;
         }
 
+        public void setPlayer(Character Player)
+        {
+            this.Player = Player;
+        }
+
         public bool OffScreen()
         {
             //Console.WriteLine("End : " + (StartZ - MapLength).ToString());
@@ -63,12 +69,23 @@ namespace GOSonic3D.Entity.Objects
 
         bool collision(Character a)
         {
-            float az = Math.Abs((Math.Abs(a.maxxyz.z) - Math.Abs(a.minxyz.z))) / 2;
-            float bz = Math.Abs((Math.Abs(maxxyz.z) - Math.Abs(minxyz.z))) / 2;
+            double ax = Math.Abs((Math.Abs(a.maxxyz.x) - Math.Abs(a.minxyz.x))) / 2;
+            double ay = Math.Abs((Math.Abs(a.maxxyz.y) - Math.Abs(a.minxyz.y))) / 2;
+            double az = Math.Abs((Math.Abs(a.maxxyz.z) - Math.Abs(a.minxyz.z)));
 
-            float zmiddis = a.Position.z - Position.z;
+            double bx = Math.Abs((Math.Abs(maxxyz.x) - Math.Abs(minxyz.x))) / 2;
+            double by = Math.Abs((Math.Abs(maxxyz.y) - Math.Abs(minxyz.y))) / 2;
+            double bz = Math.Abs((Math.Abs(maxxyz.z) - Math.Abs(minxyz.z))) / 2;
+                        
+            double xmiddis = a.Position.x - Position.x;
+            double ymiddis = a.Position.y - Position.y;
+            double zmiddis = a.Position.z - Position.z;
 
-            return az + bz > zmiddis;
+            double dis = DistanceFrom(a.Position, Position);
+            
+
+            return  dis < az
+            ;
         }
 
         public override void UpdateMovement()

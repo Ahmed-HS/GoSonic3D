@@ -121,16 +121,15 @@ namespace GOSonic3D.Entity.Objects
                 CurrentVelocity.y = 0;
                 SetPostionY(IntialPosition.y);
                 UpdateAnimationAndMove();
-                Constants.MainMenu.ShowMenu();
                 Hide();
+
+                Constants.MainMenu.ShowMenu();
                 Constants.PlayingGame = false;
                 Constants.MainMenu.SetPositionZ(Position.z + 30 * Constants.AspectRatio);
 
                 Constants.SelectScreen = false;
-                Constants.renderer.characterSelected = false;
+                Constants.renderer.characterSelected = 0;
                 Constants.renderer.SetCharactersPosition();
-
-                Console.WriteLine("Ground");
             }
         }
 

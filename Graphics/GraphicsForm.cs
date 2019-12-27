@@ -4,44 +4,58 @@ using System.Drawing;
 using System.Diagnostics;
 using GlmNet;
 using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 
 namespace GOSonic3D
 {
     public partial class GOSonic3DForm : Form
     {
         Thread MainLoopThread;
-
         float deltaTime;
+
+        Socket serverSocket;
+        string serverMessage = "";
+        string clientMessage = "";
+
         public GOSonic3DForm()
         {
-
             InitializeComponent();
-            this.TopMost = true;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
+            //this.TopMost = true;
+            //this.FormBorderStyle = FormBorderStyle.None;
+            //this.WindowState = FormWindowState.Maximized;
 
-            this.Bounds = Screen.PrimaryScreen.Bounds;
-            this.simpleOpenGlControl1.Bounds = Screen.PrimaryScreen.Bounds;
-
-
+            //this.Bounds = Screen.PrimaryScreen.Bounds;
+            //this.simpleOpenGlControl1.Bounds = Screen.PrimaryScreen.Bounds;
             simpleOpenGlControl1.InitializeContexts();
-
-
 
             initialize();
             deltaTime = 0.005f;
             MainLoopThread = new Thread(MainLoop);
             MainLoopThread.Start();
 
+            ////server
+            //IPEndPoint hostEndPoint = new IPEndPoint(IPAddress.Any, 8000);
+            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            //serverSocket.Bind(hostEndPoint);
+            //serverSocket.Listen(2);
+            //Socket cs = serverSocket.Accept();
+
+            //Thread ClientThread = new Thread(new ParameterizedThreadStart(handelServer));
+            //ClientThread.Start(cs);
         }
+
         void initialize()
         {
             float Width = Screen.PrimaryScreen.Bounds.Width;
             float Height = Screen.PrimaryScreen.Bounds.Height;
             Constants.AspectRatio = Width / Height;
             Constants.renderer = new Renderer();
-            Constants.renderer.Initialize();   
+            Constants.renderer.Initialize();
         }
+
         void MainLoop()
         {
             while (true)
@@ -51,6 +65,26 @@ namespace GOSonic3D
                 simpleOpenGlControl1.Invoke(new Action(() => simpleOpenGlControl1.Refresh()));
             }
         }
+
+        void handelServer(object obj)
+        {
+            Console.WriteLine("server");
+
+            Socket cs = (Socket)obj;
+            while (true)
+            {
+                byte[] serverMessageByte = Encoding.ASCII.GetBytes(serverMessage);
+                cs.Send(serverMessageByte);
+
+                //---------------------------------------
+
+                byte[] clientMessageByte = new byte[1024];
+                int len = cs.Receive(clientMessageByte);
+                clientMessage = Encoding.ASCII.GetString(clientMessageByte, 0, len);
+                MessageBox.Show(clientMessage);
+            }
+        }
+
         private void GOSonic3DForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Constants.renderer.CleanUp();
@@ -78,34 +112,45 @@ namespace GOSonic3D
                 Constants.renderer.cam.Fly(-speed);
             if (e.KeyChar == 'c')
                 Constants.renderer.cam.Fly(speed);
+
+
             if (Constants.PlayingGame)
             {
                 if (e.KeyChar == 'i')
                 {
+                    serverMessage = "j";
                     Constants.renderer.charcter.ToggleJump();
                 }
+                else
                 if (e.KeyChar == 'l')
                 {
+                    serverMessage = "r";
                     Constants.renderer.charcter.ShiftRight();
                 }
+                else
                 if (e.KeyChar == 'j')
                 {
+                    serverMessage = "l";
                     Constants.renderer.charcter.ShiftLeft();
                 }
+                else
+                    serverMessage = "";
 
                 if (e.KeyChar == 'w')
+                //if (clientMessage == "j")
                 {
                     Constants.renderer.charcter2.ToggleJump();
                 }
                 if (e.KeyChar == 'd')
+                //if (clientMessage == "r")
                 {
                     Constants.renderer.charcter2.ShiftRight();
                 }
                 if (e.KeyChar == 'a')
+                //if (clientMessage == "l")
                 {
                     Constants.renderer.charcter2.ShiftLeft();
                 }
-            
             }
 
             if (e.KeyChar == 'p')
@@ -122,11 +167,19 @@ namespace GOSonic3D
                 {
                     if (Constants.SelectScreen)
                     {
+                        Constants.renderer.characterSelected++;
                         Constants.renderer.SwitchCharacter();
-                        Constants.renderer.charcter.Show();
-                        Constants.renderer.charcter2.Show();
-                        Constants.PlayingGame = true;
-                        Constants.renderer.characterSelected = true;
+
+                        if(Constants.renderer.characterSelected == 1)
+                        {
+                            Constants.renderer.charcter.Show();
+                        }
+
+                        if(Constants.renderer.characterSelected == 2)
+                        {
+                            Constants.renderer.charcter2.Show();
+                            Constants.PlayingGame = true;
+                        }
                     }
                     else
                     {
@@ -138,6 +191,7 @@ namespace GOSonic3D
                 if (Constants.MainMenu.Selected == 1)
                 {
                     this.Close();
+                    serverSocket.Close();
                 }
             }
 
@@ -171,25 +225,8 @@ namespace GOSonic3D
             if (e.KeyChar == 'x')
             {
                 this.Close();
+                serverSocket.Close();
             }
-
-        }
-
-        private void GOSonic3DForm_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void MoveCursor()
-        {
-            this.Cursor = new Cursor(Cursor.Current.Handle);
-            Point p = PointToScreen(simpleOpenGlControl1.Location);
-            Cursor.Position = new Point(simpleOpenGlControl1.Size.Width/2+p.X, simpleOpenGlControl1.Size.Height/2+p.Y);
-            Cursor.Clip = new Rectangle(this.Location, this.Size);
-        }
-
-        private void SimpleOpenGlControl1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
