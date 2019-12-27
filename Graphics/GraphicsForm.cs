@@ -119,38 +119,38 @@ namespace GOSonic3D
                 if (e.KeyChar == 'i')
                 {
                     serverMessage = "j";
-                    Constants.renderer.charcter.ToggleJump();
+                    Constants.renderer.player[0].ToggleJump();
                 }
                 else
                 if (e.KeyChar == 'l')
                 {
                     serverMessage = "r";
-                    Constants.renderer.charcter.ShiftRight();
+                    Constants.renderer.player[0].ShiftRight();
                 }
                 else
                 if (e.KeyChar == 'j')
                 {
                     serverMessage = "l";
-                    Constants.renderer.charcter.ShiftLeft();
+                    Constants.renderer.player[0].ShiftLeft();
                 }
                 else
                     serverMessage = "";
 
-                if (e.KeyChar == 'w')
-                //if (clientMessage == "j")
-                {
-                    Constants.renderer.charcter2.ToggleJump();
-                }
-                if (e.KeyChar == 'd')
-                //if (clientMessage == "r")
-                {
-                    Constants.renderer.charcter2.ShiftRight();
-                }
-                if (e.KeyChar == 'a')
-                //if (clientMessage == "l")
-                {
-                    Constants.renderer.charcter2.ShiftLeft();
-                }
+                //if (e.KeyChar == 'w')
+                ////if (clientMessage == "j")
+                //{
+                //    Constants.renderer.charcter2.ToggleJump();
+                //}
+                //if (e.KeyChar == 'd')
+                ////if (clientMessage == "r")
+                //{
+                //    Constants.renderer.charcter2.ShiftRight();
+                //}
+                //if (e.KeyChar == 'a')
+                ////if (clientMessage == "l")
+                //{
+                //    Constants.renderer.charcter2.ShiftLeft();
+                //}
             }
 
             if (e.KeyChar == 'p')
@@ -172,14 +172,16 @@ namespace GOSonic3D
 
                         if(Constants.renderer.characterSelected == 1)
                         {
-                            Constants.renderer.charcter.Show();
-                        }
-
-                        if(Constants.renderer.characterSelected == 2)
-                        {
-                            Constants.renderer.charcter2.Show();
+                            Constants.renderer.player[0].Show();
                             Constants.PlayingGame = true;
                         }
+
+                        if (Constants.renderer.player.Length > 1)
+                            if (Constants.renderer.characterSelected == 2)
+                            {
+                                Constants.renderer.player[1].Show();
+                                Constants.PlayingGame = true;
+                            }
                     }
                     else
                     {
@@ -211,13 +213,20 @@ namespace GOSonic3D
             if (e.KeyChar == '\b')
             {
                 if (Constants.PlayingGame)
-                {
-                    Constants.renderer.charcter.Hide();
+                {                    
+                    for(int i =0;i< Constants.renderer.player.Length; i++)
+                    {
+                        Constants.renderer.player[i].Hide();
+                    }
                     Constants.MainMenu.ShowMenu();
+                    Constants.MainMenu.SetPositionZ(Constants.renderer.player[0].Position.z + 30 * Constants.AspectRatio);
                 }
                 else
                 {
-                    Constants.renderer.charcter.Show();
+                    for (int i = 0; i < Constants.renderer.player.Length; i++)
+                    {
+                        Constants.renderer.player[i].Show();
+                    }
                     Constants.MainMenu.HideMenu();
                 }
             }
