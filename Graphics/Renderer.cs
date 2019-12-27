@@ -60,7 +60,6 @@ namespace GOSonic3D
         float rotate = 0;
         public int selectedCharacter = 0;
         public int numOfCharacters = 4;
-        public int numOfplayers = 1;
         public int characterSelected = 0;
         public Character[] charcters;
         vec3 StartSelectPosition;
@@ -78,10 +77,11 @@ namespace GOSonic3D
 
         public float Speed = 1;
         public Camera cam;
-        public Character[] player;
+        public Character charcter;
+        public Character charcter2;
 
-        GameMap []Map;
-        public GroundedObject []Enemies;
+        GameMap[] Map;
+        public GroundedObject[] Enemies;
         public GroundedObject[] Rings;
         public void Initialize()
         {
@@ -104,22 +104,19 @@ namespace GOSonic3D
             charcters[2 + numOfCharacters] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Knuckles.md2");
             charcters[3 + numOfCharacters] = new Character(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2");
 
-            player = new Character[numOfplayers];
-
-            player[0] = charcters[0];
-            if(player.Length > 1)
-                player[1] = charcters[0 + numOfCharacters];
+            charcter = charcters[0];
+            charcter2 = charcters[0 + numOfCharacters];
 
             Enemies = new GroundedObject[6];
             Rings = new GroundedObject[20];
             for (int i = 0; i < Enemies.Length; i++)
             {
-                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", player, cam, GroundedObject.Type.Enemy);
+                Enemies[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Shadow.md2", new Character[] { charcter, charcter2 }, cam, GroundedObject.Type.Enemy);
             }
 
             for (int i = 0; i < Rings.Length; i++)
             {
-                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", player, cam, GroundedObject.Type.Ring);
+                Rings[i] = new GroundedObject(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Ring.md2", new Character[] { charcter, charcter2 }, cam, GroundedObject.Type.Ring);
             }
 
             Kernel.Sound s = new Kernel.Sound(projectPath + "\\Audio\\2.wav");
@@ -129,11 +126,11 @@ namespace GOSonic3D
             Constants.choosep1 = new ChoosePlayerMenu();
             Constants.choosep2 = new ChoosePlayerMenu();
             Constants.gameover = new GAMEOVER();
-            
+
             Map = new GameMap[2];
-            Map[0] = new GameMap(new vec3(45, 588, -350),cam);
+            Map[0] = new GameMap(new vec3(45, 588, -350), cam);
             Map[0].IsMoving = true;
-            Map[1] = new GameMap(new vec3(45, 588, Map[0].Position.z -700),cam);
+            Map[1] = new GameMap(new vec3(45, 588, Map[0].Position.z - 700), cam);
             Map[1].IsMoving = false;
 
             selectCharacter = new Shader(projectPath + "\\Shaders\\SimpleVertexShader2.vertexshader",
@@ -152,7 +149,7 @@ namespace GOSonic3D
             Chracters[3].LoadFile(projectPath + "\\ModelFiles\\static\\SelectCharacter", "Shadow1.obj", 4);
 
             StartSelectPosition = new vec3(0, 0, 5);
-            StartSelectPosition = player[0].Position;
+            StartSelectPosition = charcter.Position;
             for (int i = 0; i < 4; i++)
             {
                 Chracters[i].transmatrix = glm.translate(new mat4(1), StartSelectPosition);
@@ -170,7 +167,7 @@ namespace GOSonic3D
 
             modelID = Gl.glGetUniformLocation(shader.ID, "model");
 
-            
+
             scaleMat = glm.scale(new mat4(1), new vec3(2f, 2f, 2.0f));
             ProjectionMatrix = cam.GetProjectionMatrix();
             ViewMatrix = cam.GetViewMatrix();
@@ -299,10 +296,9 @@ namespace GOSonic3D
 
         public void SetCharactersPosition()
         {
-            StartSelectPosition.z = player[0].Position.z;
-
-            for(int i = 0; i < player.Length; i++)
-                player[i].Position = StartSelectPosition;
+            StartSelectPosition.z = charcter.Position.z;
+            charcter.Position = StartSelectPosition;
+            charcter2.Position = StartSelectPosition;
 
             for (int i = 0; i < 4; i++)
             {
@@ -314,10 +310,10 @@ namespace GOSonic3D
 
         public void SwitchCharacter()
         {
-            if(characterSelected == 0)
+            if (characterSelected == 0)
             {
-                charcters[selectedCharacter].Position = player[0].Position; 
-                player[0] = charcters[selectedCharacter];
+                charcters[selectedCharacter].Position = charcter.Position;
+                charcter = charcters[selectedCharacter];
             }
 
             if (characterSelected == 1)
@@ -332,7 +328,7 @@ namespace GOSonic3D
             Gl.glClearColor(0, 0, 0.4f, 1);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
-            if (Constants.SelectScreen && characterSelected < numOfplayers)
+            if (Constants.SelectScreen && characterSelected < 2)
             {
                 selectCharacter.UseShader();
                 Gl.glUniformMatrix4fv(modelID, 1, Gl.GL_FALSE, scaleMat.to_array());
@@ -373,13 +369,13 @@ namespace GOSonic3D
 
             charcter.Draw(modelID);
             //if (Constants.playType == PlayType.multi)
-                charcter2.Draw(modelID);
+            charcter2.Draw(modelID);
 
             Constants.MainMenu.Draw(modelID);
             Constants.choosep1.Draw(modelID);
             Constants.choosep2.Draw(modelID);
             Constants.gameover.Draw(modelID);
-            
+
 
             if (Constants.currentMen == MenuType.main)
             {
@@ -508,7 +504,7 @@ namespace GOSonic3D
                     Task.Run(() => Constants.choosep1.UpdateMenu());
                 else if (Constants.currentMen == MenuType.choosep2)
                     Task.Run(() => Constants.choosep2.UpdateMenu());
-            }      
+            }
         }
 
         public void CleanUp()
