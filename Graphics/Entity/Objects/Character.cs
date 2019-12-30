@@ -57,7 +57,7 @@ namespace GOSonic3D.Entity.Objects
 
         public void GoSuper()
         {
-            if (!IsSuper && RingCount >= 10)
+            if (!IsSuper)
             {
                 string projectPath = System.IO.Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
                 IsSuper = true;
@@ -241,11 +241,11 @@ namespace GOSonic3D.Entity.Objects
                 Fly();
             }
 
-            if (RingCount <= 0)
-            {
-                RingCount = 0;
-                UndoSuper();
-            }
+            //if (RingCount <= 0)
+            //{
+            //    RingCount = 0;
+            //    UndoSuper();
+            //}
 
             TranslateByZ(-20, 1.2f);
             UpdatePositon();

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.simpleOpenGlControl1 = new Tao.Platform.Windows.SimpleOpenGlControl();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // simpleOpenGlControl1
@@ -51,23 +50,11 @@
             this.simpleOpenGlControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.simpleOpenGlControl1_Paint);
             this.simpleOpenGlControl1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.simpleOpenGlControl1_KeyPress);
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.label1.Location = new System.Drawing.Point(705, 431);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
-            // 
             // GOSonic3DForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 749);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.simpleOpenGlControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "GOSonic3DForm";
@@ -76,14 +63,12 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GOSonic3DForm_FormClosing);
             this.Load += new System.EventHandler(this.GOSonic3DForm_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private Tao.Platform.Windows.SimpleOpenGlControl simpleOpenGlControl1;
-        private System.Windows.Forms.Label label1;
     }
 }
 
