@@ -100,7 +100,7 @@ namespace GOSonic3D.Entity.Objects
                         string projectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
 
                         Constants.s.Play(false);
-
+                        Constants.renderer.charcter.RingCount += 1;
                         Respawn();
                     }
                 
