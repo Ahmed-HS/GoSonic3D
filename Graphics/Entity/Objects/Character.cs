@@ -21,15 +21,12 @@ namespace GOSonic3D.Entity.Objects
 
         public bool IsJumping;
         public bool IsDieing;
-        public int SuperDirection;
-        bool IsSuper;
         public float Scale;
         public float GroundY;
         vec3 IntialPosition;
-        public float RingCount;
         public void ToggleJump()
         {
-            if (!IsJumping && Constants.PlayingGame && !IsSuper)
+            if (!IsJumping && Constants.PlayingGame)
             {
                 IsJumping = true;
                 StartAnimation((animType)2);
@@ -53,49 +50,6 @@ namespace GOSonic3D.Entity.Objects
                 Console.WriteLine("Velocity :" + CurrentVelocity.y);
                 Console.WriteLine("acc :" + Acceleration.y);
             }
-        }
-
-        public void GoSuper()
-        {
-            if (!IsSuper && RingCount >= 10)
-            {
-                string projectPath = System.IO.Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-                IsSuper = true;
-                IsJumping = false;
-                ChangeAccelerationY(0.0005f);
-                ChangeVelocityY(0.005f);
-                StartAnimation((animType)3);
-                LoadModel(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic1.md2");
-                MoveToY(IntialPosition.y + 25f*Constants.AspectRatio,0.6f*Constants.AspectRatio);
-            }
-        }
-
-        public void UndoSuper()
-        {
-            if (IsSuper)
-            {
-                string projectPath = System.IO.Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-                IsSuper = false;
-                RestoreDefaultVelocity();
-                StartAnimation((animType)0);
-                LoadModel(projectPath + "\\ModelFiles\\animated\\md2\\Sonic\\Sonic.md2");
-                MoveToY(GroundY, 0.6f * Constants.AspectRatio);
-            }
-        }
-
-        public void Fly()
-        {
-
-            if (FinishedMovement.y == 1)
-            {
-                SuperDirection *= -1;
-                TranslateByY(3f * SuperDirection);
-            }
-            else
-            {
-                CurrentVelocity.y += -(Acceleration.y * 2f);
-            }
-
         }
 
         public void ShiftRight()
@@ -141,13 +95,13 @@ namespace GOSonic3D.Entity.Objects
             if (Acceleration.y > 0)
             {
                 CurrentVelocity.y += -(Acceleration.y * 2);
-                //Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
+                Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
                 //Console.WriteLine("Current Position : " + Position.y);
             }
             else
             {
                 CurrentVelocity.y += -Acceleration.y - 0.05f;
-                //Console.WriteLine("Down");
+                Console.WriteLine("Down");
             }
 
 
@@ -155,9 +109,9 @@ namespace GOSonic3D.Entity.Objects
             {
                 MoveToY(GroundY - 200, 0.5f);
                 //Target.y = GroundY;
-                //Console.WriteLine("Top");
+                Console.WriteLine("Top");
                 //Console.WriteLine("Velocity :" + CurrentVelocity.y);
-                //Console.WriteLine("acc :" + Acceleration.y);
+                Console.WriteLine("acc :" + Acceleration.y);
             }
 
             if (Acceleration.y < 0 && FinishedMovement.y == 1)
@@ -196,21 +150,21 @@ namespace GOSonic3D.Entity.Objects
             if (Acceleration.y > 0)
             {
                 CurrentVelocity.y += -(Acceleration.y * 2);
-                //Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
+                Console.WriteLine("declerating Up :" + CurrentVelocity.y + "   " + Acceleration.y);
                 //Console.WriteLine("Current Position : " + Position.y);
             }
             else
             {
                 CurrentVelocity.y += -Acceleration.y - 0.05f;
-                //Console.WriteLine("Down");
+                Console.WriteLine("Down");
             }
 
 
             if ((Acceleration.y > 0 && (ReachedTarget() || CurrentVelocity.y <= 0)))
             {
                 MoveToY(GroundY, 0.5f);
-                //Console.WriteLine("Top");
-                //Console.WriteLine("acc :" + Acceleration.y);
+                Console.WriteLine("Top");
+                Console.WriteLine("acc :" + Acceleration.y);
             }
 
             if (Acceleration.y < 0 && FinishedMovement.y == 1)
@@ -218,7 +172,7 @@ namespace GOSonic3D.Entity.Objects
                 IsJumping = false;
                 StartAnimation((animType)0);
                 CurrentVelocity.y = 0;
-                //Console.WriteLine("Ground");
+                Console.WriteLine("Ground");
             }
         }
 
@@ -233,20 +187,6 @@ namespace GOSonic3D.Entity.Objects
             {
                 Die();
             }
-
-            if (IsSuper && FinishedMovement.y == 1)
-            {
-                RingCount -= 0.5f;
-                Console.WriteLine("RingCount : " + RingCount);
-                Fly();
-            }
-
-            if (RingCount <= 0)
-            {
-                RingCount = 0;
-                UndoSuper();
-            }
-
             TranslateByZ(-20, 1.2f);
             UpdatePositon();
             UpdateAnimationAndMove();
@@ -265,8 +205,6 @@ namespace GOSonic3D.Entity.Objects
         public Character(string filename) : base(filename)
         {
             StartAnimation((animType)0);
-            SuperDirection = 1;
-            IsSuper = false;
             List<mat4> Rotations = new List<mat4>();
             Rotations.Add(glm.rotate((float)((-90.0f / 180) * Math.PI), new vec3(1, 0, 0)));
             Rotations.Add(glm.rotate((float)((90.0f / 180) * Math.PI), new vec3(0, 1, 0)));
@@ -278,7 +216,6 @@ namespace GOSonic3D.Entity.Objects
             GroundY = Position.y;
             Target = Position;
             IsJumping = false;
-            RingCount = 0;
         }
     }
 }

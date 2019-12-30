@@ -97,8 +97,16 @@ namespace GOSonic3D._3D_Models
         public vec3 maxxyz = new vec3(0, 0, 0);
         public vec3 minxyz = new vec3(0, 0, 0);
 
+        
 
-        public void LoadNewModel(string fileName)
+        public void UpdateAnimationAndMove()
+        {
+            TranslationMatrix = glm.translate(new mat4(1), Position);
+            UpdateAnimation();
+        }
+        public virtual void UpdateMovement()
+        {}
+        public md2(string fileName)
         {
             animlist = new List<anim_t>();
             anim_t a1 = new anim_t();
@@ -108,10 +116,10 @@ namespace GOSonic3D._3D_Models
             a1.first_frame = 3; a1.last_frame = 10; a1.fps = 9;
             animlist.Add(a1);
             a1 = new anim_t();
-            a1.first_frame = 11; a1.last_frame = 14; a1.fps = 11;
+            a1.first_frame = 12; a1.last_frame = 15; a1.fps = 11;
             animlist.Add(a1);
             a1 = new anim_t();
-            a1.first_frame = 0; a1.last_frame = 3; a1.fps = 9;
+            a1.first_frame = 32; a1.last_frame = 33; a1.fps = 9;
             animlist.Add(a1);
             a1 = new anim_t();
             a1.first_frame = 58; a1.last_frame = 61; a1.fps = 7;
@@ -194,19 +202,8 @@ namespace GOSonic3D._3D_Models
 
             LoadModel(fileName);
         }
-        public void UpdateAnimationAndMove()
-        {
-            TranslationMatrix = glm.translate(new mat4(1), Position);
-            UpdateAnimation();
-        }
-        public virtual void UpdateMovement()
-        {}
-        public md2(string fileName)
-        {
-            LoadNewModel(fileName);
-        }
 
-        public void LoadModel(string path,bool flip = true)
+        void LoadModel(string path,bool flip = true)
         {
             FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             BinaryReader br = new BinaryReader(stream);
