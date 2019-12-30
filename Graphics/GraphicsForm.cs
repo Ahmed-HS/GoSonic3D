@@ -65,6 +65,7 @@ namespace GOSonic3D
                 Constants.renderer.Draw();
                 Constants.renderer.Update(deltaTime);
                 simpleOpenGlControl1.Invoke(new Action(() => simpleOpenGlControl1.Refresh()));
+                label1.Text = "Rings : " + Constants.renderer.charcter.RingCount.ToString();
             }
         }
 
@@ -155,6 +156,16 @@ namespace GOSonic3D
                 //if (clientMessage == "l")
                 {
                     Constants.renderer.charcter2.ShiftLeft();
+                }
+
+                if (e.KeyChar == 'z')
+                {
+                    Constants.renderer.charcter.GoSuper();
+                }
+
+                if (e.KeyChar == 'c')
+                {
+                    Constants.renderer.charcter.UndoSuper();
                 }
             }
 

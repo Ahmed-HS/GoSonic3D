@@ -20,19 +20,22 @@ namespace GOSonic3D.Entity.Objects
         public MoveableObject(vec3 StartPosition)
         {
             Position = StartPosition;
-            ChangeVelocity(new vec3(0.25f, 0.25f, 0.25f));
-            ChangeAcceleration(new vec3(0.12f, 0.11f, 0.12f));
-            ChangeMaxVelocity(new vec3(3, 3, 3));
+            RestoreDefaultVelocity();
             IntialVelocity = CurrentVelocity;
         }
 
         public MoveableObject()
         {
             Position = new vec3(0, 0, 0);
+            RestoreDefaultVelocity();
+            IntialVelocity = CurrentVelocity;
+        }
+
+        public void RestoreDefaultVelocity()
+        {
             ChangeVelocity(new vec3(0.25f, 0.25f, 0.25f));
             ChangeAcceleration(new vec3(0.12f, 0.11f, 0.12f));
             ChangeMaxVelocity(new vec3(3, 3, 3));
-            IntialVelocity = CurrentVelocity;
         }
 
         public void SetPostionZ(float PositionZ)
@@ -260,6 +263,7 @@ namespace GOSonic3D.Entity.Objects
                 if (Math.Abs(Position.y + CurrentVelocity.y - Target.y) > Math.Abs(Position.y - Target.y))
                 {
                     Position.y += Math.Abs(Position.y - Target.y) / 2;
+                    FinishedMovement.y = 1;
                 }
                 else
                 {
@@ -301,7 +305,7 @@ namespace GOSonic3D.Entity.Objects
 
         public bool ReachedTarget()
         {
-            if(FinishedMovement.x == 1 && FinishedMovement.y == 1 && FinishedMovement.z == 1)
+            if(FinishedMovement.x == 1 && FinishedMovement.y == 1)
             {
                 return true;
             }
